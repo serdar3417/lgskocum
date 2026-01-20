@@ -1,0 +1,3353 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGS Koçluk Uygulaması - Akıllı Asistan</title>
+    <!-- Bootstrap 5.3.2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A6FA5;
+            --secondary-color: #166088;
+            --accent-color: #17A2B8;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --font-size: 1rem;
+            --theme-name: "default";
+        }
+        
+        .theme-default {
+            --primary-color: #4A6FA5;
+            --secondary-color: #166088;
+            --accent-color: #17A2B8;
+        }
+        
+        .theme-modern {
+            --primary-color: #6C63FF;
+            --secondary-color: #4A47B8;
+            --accent-color: #FF6584;
+        }
+        
+        .theme-nature {
+            --primary-color: #2E8B57;
+            --secondary-color: #3CB371;
+            --accent-color: #20B2AA;
+        }
+        
+        .theme-dark {
+            --primary-color: #343a40;
+            --secondary-color: #495057;
+            --accent-color: #17A2B8;
+            --light-color: #212529;
+            --dark-color: #f8f9fa;
+        }
+        
+        .theme-warm {
+            --primary-color: #E76F51;
+            --secondary-color: #F4A261;
+            --accent-color: #E9C46A;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f5ff;
+            color: #333;
+            padding-bottom: 50px;
+            font-size: var(--font-size);
+            transition: all 0.3s ease;
+        }
+        
+        .dark-mode {
+            background-color: #121212;
+            color: #f8f9fa;
+        }
+        
+        .dark-mode .info-card,
+        .dark-mode .input-area,
+        .dark-mode .chat-container {
+            background-color: #1e1e1e;
+            color: #f8f9fa;
+        }
+        
+        .dark-mode .bot-message .message-content {
+            background-color: #2d2d2d;
+            color: #f8f9fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 0;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chat-container {
+            height: 500px;
+            overflow-y: auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .user-message {
+            justify-content: flex-end;
+        }
+        
+        .bot-message {
+            justify-content: flex-start;
+        }
+        
+        .message-content {
+            max-width: 75%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+        }
+        
+        .user-message .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-right-radius: 5px;
+        }
+        
+        .bot-message .message-content {
+            background-color: #f1f3f6;
+            color: #333;
+            border-top-left-radius: 5px;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+        }
+        
+        .user-message .message-avatar {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .bot-message .message-avatar {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .input-area {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .action-button {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .voice-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .send-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .volume-control {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .mute-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .info-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            height: 100%;
+        }
+        
+        .subject-card {
+            border-left: 5px solid;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .turkish { border-color: #e74c3c; }
+        .math { border-color: #3498db; }
+        .science { border-color: #2ecc71; }
+        .history { border-color: #f39c12; }
+        .english { border-color: #9b59b6; }
+        .religion { border-color: #1abc9c; }
+        
+        .progress-bar-custom {
+            border-radius: 10px;
+            height: 12px;
+        }
+        
+        .teacher-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            margin: 0 auto 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .teacher-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .avatar-turkish { background-color: #e74c3c; }
+        .avatar-math { background-color: #3498db; }
+        .avatar-science { background-color: #2ecc71; }
+        .avatar-history { background-color: #f39c12; }
+        .avatar-english { background-color: #9b59b6; }
+        .avatar-religion { background-color: #1abc9c; }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .welcome-modal {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 20px;
+        }
+        
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #f1f3f6;
+            border-radius: 18px;
+            width: 60px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #888;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+            40% { transform: translateY(-5px); opacity: 1; }
+        }
+        
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 1050;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .settings-panel.open {
+            right: 0;
+        }
+        
+        .settings-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            display: none;
+        }
+        
+        .settings-overlay.active {
+            display: block;
+        }
+        
+        .theme-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .theme-option.active {
+            border-color: var(--accent-color);
+        }
+        
+        .theme-default-bg { background: linear-gradient(135deg, #4A6FA5, #166088); }
+        .theme-modern-bg { background: linear-gradient(135deg, #6C63FF, #4A47B8); }
+        .theme-nature-bg { background: linear-gradient(135deg, #2E8B57, #3CB371); }
+        .theme-dark-bg { background: linear-gradient(135deg, #343a40, #495057); }
+        .theme-warm-bg { background: linear-gradient(135deg, #E76F51, #F4A261); }
+        
+        .exam-history-item {
+            border-left: 4px solid var(--primary-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .exam-history-item:hover {
+            transform: translateX(5px);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .volume-slider {
+            width: 100%;
+        }
+        
+        .password-protected {
+            display: none;
+        }
+        
+        .password-protected.active {
+            display: block;
+        }
+        
+        .floating-volume {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            width: 200px;
+        }
+        
+        .floating-volume.show {
+            display: block;
+        }
+        
+        .text-speech-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .database-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .similar-questions {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .question-match {
+            background-color: #e7f4ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+    </style>
+</head>
+<body class="theme-default">
+    <!-- Settings Overlay -->
+    <div class="settings-overlay" id="settingsOverlay"></div>
+    
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4><i class="fas fa-cog me-2"></i> Ayarlar</h4>
+            <button class="btn btn-sm btn-outline-secondary" id="closeSettingsBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="mb-4">
+            <h5>Tema Seçimi</h5>
+            <div class="d-flex flex-wrap">
+                <div class="theme-option theme-default-bg active" data-theme="default" title="Varsayılan Tema"></div>
+                <div class="theme-option theme-modern-bg" data-theme="modern" title="Modern Tema"></div>
+                <div class="theme-option theme-nature-bg" data-theme="nature" title="Doğa Teması"></div>
+                <div class="theme-option theme-dark-bg" data-theme="dark" title="Koyu Tema"></div>
+                <div class="theme-option theme-warm-bg" data-theme="warm" title="Sıcak Tema"></div>
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h5>Yazı Boyutu</h5>
+            <div class="font-size-control">
+                <button class="btn btn-sm btn-outline-secondary" id="decreaseFontBtn">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <span id="fontSizeDisplay">Orta</span>
+                <button class="btn btn-sm btn-outline-secondary" id="increaseFontBtn">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <h5>Ses Kontrolü</h5>
+            <div class="text-speech-toggle mb-3">
+                <span>Metin Seslendirme</span>
+                <label class="switch">
+                    <input type="checkbox" id="textToSpeechToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-volume-down me-2"></i>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+                <i class="fas fa-volume-up ms-2"></i>
+            </div>
+        </div>
+        
+        <div class="database-section">
+            <h5 class="mb-3"><i class="fas fa-database me-2"></i> Veritabanı Yönetimi</h5>
+            
+            <div class="password-protected" id="knowledgeBaseSection">
+                <div class="mb-3">
+                    <h6>Şifre İşlemleri</h6>
+                    <div class="mb-2">
+                        <input type="password" class="form-control mb-2" id="currentPassword" placeholder="Mevcut Şifre">
+                        <input type="password" class="form-control mb-2" id="newPassword" placeholder="Yeni Şifre">
+                        <input type="password" class="form-control mb-2" id="confirmPassword" placeholder="Yeni Şifre (Tekrar)">
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-primary flex-fill" id="changePasswordBtn">Şifreyi Değiştir</button>
+                            <button class="btn btn-sm btn-danger flex-fill" id="deletePasswordBtn">Şifreyi Sil</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Soru-Cevap Veritabanı</h6>
+                    <div class="mb-2">
+                        <button class="btn btn-sm btn-outline-success w-100 mb-2" id="exportKnowledgeBaseBtn">
+                            <i class="fas fa-download me-1"></i> Tüm Soruları JSON İndir
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary w-100 mb-2" id="importKnowledgeBaseBtn">
+                            <i class="fas fa-upload me-1"></i> JSON'dan Soru Yükle
+                        </button>
+                        <input type="file" class="form-control d-none" id="knowledgeBaseFileInput" accept=".json">
+                        <button class="btn btn-sm btn-outline-info w-100 mb-3" id="manageKnowledgeBaseBtn">
+                            <i class="fas fa-list me-1"></i> Tüm Soru-Cevapları Listele
+                        </button>
+                        
+                        <div class="alert alert-info">
+                            <small><i class="fas fa-info-circle me-1"></i> Sistemde <span id="knowledgeBaseCount">0</span> soru-cevap bulunuyor.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3" id="passwordSection">
+                <h6>Şifre Girişi</h6>
+                <div class="mb-2">
+                    <input type="password" class="form-control mb-2" id="passwordInput" placeholder="Şifre (Varsayılan: 1234)">
+                    <button class="btn btn-sm btn-primary w-100" id="loginPasswordBtn">
+                        <i class="fas fa-sign-in-alt me-1"></i> Giriş Yap
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="knowledgeBaseList" class="mt-3">
+            <!-- Knowledge base items will be listed here -->
+        </div>
+        
+        <div class="mt-4 pt-3 border-top">
+            <button class="btn btn-sm btn-outline-danger w-100" id="resetAppBtn">
+                <i class="fas fa-trash-alt me-1"></i> Uygulamayı Sıfırla
+            </button>
+        </div>
+    </div>
+    
+    <!-- Knowledge Base Management Modal -->
+    <div class="modal fade" id="knowledgeBaseModal" tabindex="-1" aria-labelledby="knowledgeBaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="knowledgeBaseModalLabel">Soru-Cevap Yönetimi (<span id="totalQuestionsCount">0</span> soru)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Soruları güncellemek veya silmek için listeden seçim yapın. Yeni soru eklemek için "Yeni Soru-Cevap Ekle" butonunu kullanın.
+                    </div>
+                    
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-success" id="addNewQABtn">
+                            <i class="fas fa-plus me-1"></i> Yeni Soru-Cevap Ekle
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger float-end" id="deleteSelectedBtn">
+                            <i class="fas fa-trash me-1"></i> Seçilenleri Sil
+                        </button>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="50">
+                                        <input type="checkbox" id="selectAllCheckbox">
+                                    </th>
+                                    <th width="30%">Soru</th>
+                                    <th width="55%">Cevap</th>
+                                    <th width="15%">Konu</th>
+                                    <th width="80">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody id="knowledgeBaseItemsContainer">
+                                <!-- Knowledge base items will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-primary" id="saveKnowledgeBaseBtn">Değişiklikleri Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Volume Control -->
+    <div class="floating-volume" id="floatingVolume">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h6 class="mb-0"><i class="fas fa-volume-up me-2"></i>Ses Kontrolü</h6>
+            <button class="btn btn-sm btn-outline-secondary" id="closeVolumeBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mb-3">
+            <div class="text-speech-toggle mb-2">
+                <span>Metin Seslendirme</span>
+                <label class="switch">
+                    <input type="checkbox" id="floatingTextToSpeechToggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-volume-down me-2"></i>
+                <input type="range" class="volume-slider" id="floatingVolumeSlider" min="0" max="100" value="50">
+                <i class="fas fa-volume-up ms-2"></i>
+            </div>
+        </div>
+        <button class="btn btn-sm btn-outline-secondary w-100" id="muteBtn">
+            <i class="fas fa-volume-mute me-1"></i> Sesi Kapat
+        </button>
+    </div>
+    
+    <!-- Header -->
+    <header class="header text-center mb-4">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-light btn-sm" id="settingsBtn">
+                    <i class="fas fa-cog"></i> Ayarlar
+                </button>
+                <div>
+                    <h1><i class="fas fa-graduation-cap me-2"></i> LGS Koçluk Asistanı</h1>
+                    <p class="lead mb-0">LGS'ye hazırlanan öğrenciler için yapay zeka destekli sesli ve yazılı koçluk</p>
+                </div>
+                <button class="btn btn-light btn-sm" id="addExamBtn">
+                    <i class="fas fa-plus"></i> Yeni Deneme Ekle
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Left Column: Chat Interface -->
+            <div class="col-lg-8 mb-4">
+                <div class="chat-container" id="chatContainer">
+                    <!-- Messages will appear here -->
+                </div>
+                
+                <div class="input-area">
+                    <div class="row align-items-center">
+                        <div class="col-2 text-center">
+                            <div class="action-button voice-btn" id="voiceButton" title="Sesli soru sor">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="messageInput" placeholder="Sorunuzu yazın veya sesli soru için mikrofon butonuna tıklayın...">
+                        </div>
+                        <div class="col-2 text-center">
+                            <div class="action-button volume-control" id="volumeButton" title="Ses kontrolü">
+                                <i class="fas fa-volume-up"></i>
+                            </div>
+                        </div>
+                        <div class="col-2 text-center">
+                            <div class="action-button send-btn" id="sendButton" title="Gönder">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-center">
+                            <small class="text-muted">Hızlı sorular: 
+                                <span class="quick-question" data-question="LGS ne zaman?">LGS ne zaman?</span> • 
+                                <span class="quick-question" data-question="Netlerimi nasıl arttırabilirim?">Netlerimi nasıl arttırabilirim?</span> • 
+                                <span class="quick-question" data-question="Hangi konulara çalışmalıyım?">Hangi konulara çalışmalıyım?</span> • 
+                                <span class="quick-question" data-question="Deneme analizi yap">Deneme analizi yap</span>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Student Info and Stats -->
+            <div class="col-lg-4 mb-4">
+                <!-- Student Info Card -->
+                <div class="info-card">
+                    <h4><i class="fas fa-user-graduate me-2"></i> Öğrenci Bilgileri</h4>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-primary w-100" id="editProfileBtn">Profilimi Düzenle</button>
+                    </div>
+                    <div id="studentInfo">
+                        <!-- Student info will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Exam Stats Card -->
+                <div class="info-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-chart-bar me-2"></i> Sınav İstatistikleri</h4>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="examHistoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-history"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="examHistoryDropdown" id="examHistoryDropdownMenu">
+                                <!-- Exam history will be loaded here -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="examStats">
+                        <!-- Exam stats will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Exam History Card -->
+                <div class="info-card">
+                    <h5><i class="fas fa-clipboard-list me-2"></i> Deneme Geçmişi</h5>
+                    <div id="examHistoryList">
+                        <!-- Exam history will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Teachers Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="info-card">
+                    <h4 class="text-center"><i class="fas fa-chalkboard-teacher me-2"></i> Öğretmenlerim</h4>
+                    <p class="text-center mb-4">Öğretmenlerime tıklayarak ders başarı durumuma göre tavsiye alabilirim</p>
+                    
+                    <div class="row text-center">
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-turkish" data-subject="türkçe" data-teacher="Türkçe Öğretmeni">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h6>Türkçe</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-math" data-subject="matematik" data-teacher="Matematik Öğretmeni">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h6>Matematik</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-science" data-subject="fen" data-teacher="Fen Bilimleri Öğretmeni">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h6>Fen Bilimleri</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-history" data-subject="inkılap" data-teacher="İnkılap Tarihi Öğretmeni">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <h6>İnkılap Tarihi</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-english" data-subject="ingilizce" data-teacher="İngilizce Öğretmeni">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <h6>İngilizce</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-6 mb-3">
+                            <div class="teacher-avatar avatar-religion" data-subject="din" data-teacher="Din Kültürü Öğretmeni">
+                                <i class="fas fa-hands-praying"></i>
+                            </div>
+                            <h6>Din Kültürü</h6>
+                            <small class="text-muted">Öğretmeni</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Graph -->
+        <div class="row">
+            <div class="col-12">
+                <div class="info-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i> Performans Analizi</h4>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="chartExamDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Tüm Denemeler
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="chartExamDropdown" id="chartExamDropdownMenu">
+                                <!-- Exam selection for chart will be loaded here -->
+                            </ul>
+                        </div>
+                    </div>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Welcome Modal -->
+    <div class="modal fade" id="welcomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content welcome-modal">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title" id="welcomeModalLabel">LGS Koçluk Asistanına Hoş Geldin!</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Merhaba! Ben LGS koçluk asistanın. LGS hazırlık sürecinde sana rehberlik etmek için buradayım.</p>
+                    <p>Seni daha iyi tanıyabilmem ve sana özel tavsiyeler verebilmem için lütfen kendinle ilgili bilgileri paylaş.</p>
+                    
+                    <form id="studentForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="studentName" class="form-label">Adın</label>
+                                <input type="text" class="form-control" id="studentName" placeholder="Adınız" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="targetSchool" class="form-label">Hedef Lise</label>
+                                <input type="text" class="form-control" id="targetSchool" placeholder="Örn: Fen Lisesi" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="hobbies" class="form-label">Hobilerin (Virgülle ayırarak yaz)</label>
+                            <input type="text" class="form-control" id="hobbies" placeholder="Örn: Müzik, Satranç, Basketbol">
+                        </div>
+                        
+                        <h5 class="mt-4 mb-3">Son Deneme Sınavı Sonuçların</h5>
+                        <p class="small">LGS'de her dersin soru sayısına göre doğru, yanlış ve boş sayılarını gir.</p>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card turkish">
+                                    <h6>Türkçe (20 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="turkishCorrect" placeholder="Doğru" min="0" max="20" value="15">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="turkishWrong" placeholder="Yanlış" min="0" max="20" value="3">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="turkishEmpty" placeholder="Boş" min="0" max="20" value="2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card math">
+                                    <h6>Matematik (20 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="mathCorrect" placeholder="Doğru" min="0" max="20" value="12">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="mathWrong" placeholder="Yanlış" min="0" max="20" value="5">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="mathEmpty" placeholder="Boş" min="0" max="20" value="3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card science">
+                                    <h6>Fen Bilimleri (20 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="scienceCorrect" placeholder="Doğru" min="0" max="20" value="16">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="scienceWrong" placeholder="Yanlış" min="0" max="20" value="2">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="scienceEmpty" placeholder="Boş" min="0" max="20" value="2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card history">
+                                    <h6>İnkılap Tarihi (10 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="historyCorrect" placeholder="Doğru" min="0" max="10" value="8">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="historyWrong" placeholder="Yanlış" min="0" max="10" value="1">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="historyEmpty" placeholder="Boş" min="0" max="10" value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card english">
+                                    <h6>İngilizce (10 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="englishCorrect" placeholder="Doğru" min="0" max="10" value="9">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="englishWrong" placeholder="Yanlış" min="0" max="10" value="1">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="englishEmpty" placeholder="Boş" min="0" max="10" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <div class="subject-card religion">
+                                    <h6>Din Kültürü (10 soru)</h6>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="religionCorrect" placeholder="Doğru" min="0" max="10" value="10">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="religionWrong" placeholder="Yanlış" min="0" max="10" value="0">
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="number" class="form-control form-control-sm" id="religionEmpty" placeholder="Boş" min="0" max="10" value="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light btn-lg" id="startChatBtn">Konuşmaya Başla!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Exam Modal -->
+    <div class="modal fade" id="addExamModal" tabindex="-1" aria-labelledby="addExamModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExamModalLabel">Yeni Deneme Sınavı Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="examName" class="form-label">Deneme Adı</label>
+                        <input type="text" class="form-control" id="examName" placeholder="Örn: 1. Deneme Sınavı, Kasım Denemesi">
+                    </div>
+                    
+                    <h5 class="mt-4 mb-3">Deneme Sınavı Sonuçları</h5>
+                    <p class="small">LGS'de her dersin soru sayısına göre doğru, yanlış ve boş sayılarını gir.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card turkish">
+                                <h6>Türkçe (20 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newTurkishCorrect" placeholder="Doğru" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newTurkishWrong" placeholder="Yanlış" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newTurkishEmpty" placeholder="Boş" min="0" max="20" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card math">
+                                <h6>Matematik (20 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newMathCorrect" placeholder="Doğru" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newMathWrong" placeholder="Yanlış" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newMathEmpty" placeholder="Boş" min="0" max="20" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card science">
+                                <h6>Fen Bilimleri (20 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newScienceCorrect" placeholder="Doğru" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newScienceWrong" placeholder="Yanlış" min="0" max="20" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newScienceEmpty" placeholder="Boş" min="0" max="20" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card history">
+                                <h6>İnkılap Tarihi (10 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newHistoryCorrect" placeholder="Doğru" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newHistoryWrong" placeholder="Yanlış" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newHistoryEmpty" placeholder="Boş" min="0" max="10" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card english">
+                                <h6>İngilizce (10 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newEnglishCorrect" placeholder="Doğru" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newEnglishWrong" placeholder="Yanlış" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newEnglishEmpty" placeholder="Boş" min="0" max="10" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <div class="subject-card religion">
+                                <h6>Din Kültürü (10 soru)</h6>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newReligionCorrect" placeholder="Doğru" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newReligionWrong" placeholder="Yanlış" min="0" max="10" value="0">
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control form-control-sm" id="newReligionEmpty" placeholder="Boş" min="0" max="10" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-primary" id="saveExamBtn">Denemeyi Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span id="notificationText"></span>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Application State
+        const appState = {
+            student: {
+                name: "",
+                targetSchool: "",
+                hobbies: [],
+                lastMood: "",
+                currentExam: 0, // Index of current exam
+                exams: [] // Array of exam results
+            },
+            knowledgeBase: {},
+            conversationHistory: [],
+            isListening: false,
+            recognition: null,
+            volume: 50,
+            theme: "default",
+            fontSize: 1.0,
+            password: "1234",
+            isAuthenticated: false,
+            textToSpeechEnabled: true,
+            speechSynthesis: null,
+            selectedQuestions: [], // For bulk operations
+            teacherAdviceCounters: {} // For tracking which advice variant to show
+        };
+
+        // LGS Exam Date (14 June 2026)
+        const lgsDate = new Date('2026-06-14');
+
+        // Teacher Advice Variants - Different phrases for same performance levels
+        const teacherAdviceVariants = {
+            // For excellent performance (>= 80%)
+            excellent: [
+                "Harika bir performans! Bu düzeyde devam ettiğin sürece hedefine rahatlıkla ulaşabilirsin. Başarını kutluyorum!",
+                "Mükemmel sonuçlar! Çalışmalarının karşılığını alıyorsun. Bu tempoyu sürdürerek başarından emin olabilirsin.",
+                "Çok başarılısın! Bu dersle ilgili bir sıkıntın yok gibi görünüyor. Diğer derslere de bu özeni gösterirsen LGS'de istediğin puanı rahat alırsın.",
+                "Tebrikler! Bu derste çok iyi bir seviyedesin. Özgüvenini kaybetmeden çalışmaya devam et, başarın katlanarak artacaktır.",
+                "Bravo! Bu ders senin için çocuk oyuncağı gibi. Zamanını diğer derslere ayırarak genel başarını daha da artırabilirsin."
+            ],
+            
+            // For good performance (60-80%)
+            good: [
+                "İyi gidiyorsun! Bu dersle ilgili temelin sağlam, biraz daha çalışmayla mükemmele ulaşabilirsin.",
+                "Gayet başarılısın! Küçük eksikliklerini tamamlayarak bu derste daha da iyi olabilirsin.",
+                "Yolun doğru! Çalışmalarının meyvesini alıyorsun. Biraz daha gayretle harika sonuçlar elde edeceksin.",
+                "İyi bir noktadasın! Yaptığın yanlışları analiz edip üzerinde çalışırsan çok daha iyi olabilirsin.",
+                "Başarın görünür! Bu derste iyi bir seviyedesin. Hedeflediğin puan için biraz daha çaba yeterli olacaktır."
+            ],
+            
+            // For average performance (40-60%)
+            average: [
+                "Orta düzeyde bir performans gösteriyorsun. Daha fazla pratik yaparak bu dersi geliştirebilirsin.",
+                "Bu dersle ilgili temel bilgilerin var ama biraz daha çalışmaya ihtiyacın var. Düzenli tekrar yapmalısın.",
+                "Kabul edilebilir bir seviyedesin. Eksik konularını belirleyip üzerinde çalışırsan çok daha iyi olabilirsin.",
+                "Yolun yarısındasın! Bu dersle ilgili daha fazla soru çözerek kendini geliştirebilirsin.",
+                "Gelişim gösterebilirsin. Bu derste daha iyi olmak için konu tekrarı yapıp bol soru çözmelisin."
+            ],
+            
+            // For needs improvement (< 40%)
+            needs_improvement: [
+                "Bu dersle ilgili daha fazla çalışmaya ihtiyacın var. Temel konuları tekrar ederek başlayabilirsin.",
+                "Geliştirilmesi gereken bir alan. Öncelikle eksik olduğun konuları belirlemeli ve üzerinde çalışmalısın.",
+                "Bu derste daha iyi olabilirsin. Konuları adım adım çalışıp bol bol pratik yapmalısın.",
+                "Zorlandığın bir ders gibi görünüyor. Destek alarak veya farklı kaynaklardan çalışarak ilerleyebilirsin.",
+                "Bu derse daha fazla zaman ayırmalısın. Küçük adımlarla başlayıp yavaş yavaş ilerleyebilirsin."
+            ]
+        };
+
+        // Comprehensive Knowledge Base for LGS Students
+        const defaultKnowledgeBase = {
+            // LGS Tarih ve Genel Bilgiler
+            "lgs ne zaman": {
+                answer: "LGS 14 Haziran 2026 Pazar günü yapılacak. " + getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["sınav tarihi", "sınav ne zaman", "lgs tarihi", "sınav zamanı", "lgs sınav tarihi"]
+            },
+            "lgs tarih": {
+                answer: "LGS 14 Haziran 2026 Pazar günü yapılacak. " + getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["sınav ne zaman", "tarih", "sınav tarihi", "lgs sınav tarihi"]
+            },
+            "sınav ne zaman": {
+                answer: "LGS sınavı 14 Haziran 2026 Pazar günü yapılacak. " + getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["lgs ne zaman", "sınav tarihi", "lgs sınavı", "sınav zamanı"]
+            },
+            "lgs sınavı": {
+                answer: "LGS sınavı 14 Haziran 2026 Pazar günü yapılacak. " + getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["lgs ne zaman", "sınav tarihi", "lgs tarihi"]
+            },
+            "kaç gün kaldı": {
+                answer: getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["kalan gün", "sınava ne kadar var", "kaç gün var", "ne kadar zaman kaldı"]
+            },
+            "sınava ne kadar zaman kaldı": {
+                answer: getDaysRemainingText(),
+                subject: "genel",
+                keywords: ["kaç gün kaldı", "kalan süre", "ne kadar kaldı"]
+            },
+            
+            // Genel Sorular
+            "nasılsın": {
+                answer: "Ben iyiyim, teşekkür ederim! Sen nasılsın? LGS hazırlıkların nasıl gidiyor?",
+                subject: "genel",
+                keywords: ["naber", "iyi misin", "hal hatır", "ne haber", "nasıl gidiyor"]
+            },
+            "naber": {
+                answer: "İyiyim, sen nasılsın? Bugün çalışma planın nasıl?",
+                subject: "genel",
+                keywords: ["nasılsın", "ne haber", "iyi misin"]
+            },
+            "merhaba": {
+                answer: `Merhaba! LGS koçluk asistanına hoş geldin. Sınav hazırlık sürecinde sana yardımcı olmak için buradayım.`,
+                subject: "genel",
+                keywords: ["selam", "hi", "hello", "günaydın", "iyi günler"]
+            },
+            "teşekkür ederim": {
+                answer: "Rica ederim! Başka nasıl yardımcı olabilirim? LGS ile ilgili başka soruların varsa sormaktan çekinme.",
+                subject: "genel",
+                keywords: ["sağol", "thanks", "eyvallah", "teşekkürler", "sağ ol"]
+            },
+            
+            // Net Artırma ve Çalışma Teknikleri
+            "netlerimi nasıl arttırabilirim": {
+                answer: "Netlerini artırmak için: 1) Düzenli tekrar yap, 2) Deneme çöz ve analiz et, 3) Eksik konulara öncelik ver, 4) Yanlış yaptığın soruları mutlaka analiz et, 5) Zaman yönetimi becerilerini geliştir.",
+                subject: "genel",
+                keywords: ["başarıyı arttırma", "net artışı", "daha iyi nasıl olurum", "nasıl gelişebilirim", "başarı ipuçları"]
+            },
+            "hangi konulara çalışmalıyım": {
+                answer: "Eksik olduğun konulara odaklanmalısın. Deneme analizine göre en çok yanlış yaptığın konulara çalışmanı öneririm. Ayrıca LGS'de en çok soru gelen konulara da öncelik verebilirsin.",
+                subject: "genel",
+                keywords: ["konu seçimi", "öncelikli konular", "çalışma odak noktası", "hangi derslere çalışmalıyım", "önemli konular"]
+            },
+            "deneme analizi yap": {
+                answer: "Deneme analizi yapıyorum. Lütfen biraz bekle...",
+                subject: "genel",
+                keywords: ["sınav analizi", "performans değerlendirme", "analiz yap", "sonuç analizi"]
+            },
+            "çalışma programı nasıl olmalı": {
+                answer: "İyi bir çalışma programı: 1) Her derse dengeli zaman ayırmalı, 2) Eksik derslere daha fazla zaman vermeli, 3) Her 45-50 dakika çalışmadan sonra 10-15 dakika mola vermeli, 4) Haftada bir günü tekrar günü yapmalı, 5) Uyku düzenini korumalısın.",
+                subject: "rehberlik",
+                keywords: ["program hazırlama", "çalışma planı", "zaman çizelgesi", "nasıl program yapmalıyım", "günlük program"]
+            },
+            
+            // Ders Özelinde Net Artırma
+            "matematik netimi nasıl arttırabilirim": {
+                answer: "Matematikte net artırmak için: 1) Bol soru çöz, 2) Temel konuları iyi anla, 3) Problem çözme becerilerini geliştir, 4) Formülleri mantığıyla öğren, 5) Günlük hayat problemleri üzerinde çalış, 6) Denemelerde zaman yönetimine dikkat et.",
+                subject: "matematik",
+                keywords: ["matematik başarısı", "matematik geliştirme", "matematik net artırma", "matematik nasıl çalışılır"]
+            },
+            "türkçe netimi nasıl arttırabilirim": {
+                answer: "Türkçe netlerini artırmak için: 1) Okuma hızını ve anlama becerini geliştir, 2) Paragraf sorularında önce soruyu oku sonra paragrafı oku, 3) Dil bilgisi konularını tekrar et, 4) Sözcük dağarcığını geliştir, 5) Yazım kurallarını iyi öğren.",
+                subject: "türkçe",
+                keywords: ["türkçe başarısı", "türkçe geliştirme", "türkçe net artırma", "türkçe nasıl çalışılır"]
+            },
+            "fen netimi nasıl arttırabilirim": {
+                answer: "Fen bilimlerinde net artırmak için: 1) Deney ve gözlem becerilerini geliştir, 2) Konuları günlük hayatla ilişkilendir, 3) Formülleri ezberlemek yerine mantığını anla, 4) Görsel hafıza tekniklerini kullan, 5) Laboratuvar becerilerini geliştir.",
+                subject: "fen",
+                keywords: ["fen başarısı", "fen geliştirme", "fen net artırma", "fen nasıl çalışılır"]
+            },
+            "inkılap netimi nasıl arttırabilirim": {
+                answer: "İnkılap Tarihi'nde net artırmak için: 1) Kronolojik sırayı iyi öğren, 2) Olayların neden-sonuç ilişkisini anla, 3) Kavramları iyi öğren, 4) Haritaları incele, 5) Görsel hafıza teknikleri kullan.",
+                subject: "inkılap",
+                keywords: ["inkılap başarısı", "tarih geliştirme", "inkılap net artırma", "inkılap nasıl çalışılır"]
+            },
+            "ingilizce netimi nasıl arttırabilirim": {
+                answer: "İngilizce netlerini artırmak için: 1) Kelime dağarcığını geliştir, 2) Gramer kurallarını iyi öğren, 3) Okuma parçalarını anlama becerisi geliştir, 4) Dinleme egzersizleri yap, 5) Pratik yapmak için İngilizce içerikler tüket.",
+                subject: "ingilizce",
+                keywords: ["ingilizce başarısı", "ingilizce geliştirme", "ingilizce net artırma", "ingilizce nasıl çalışılır"]
+            },
+            "din netimi nasıl arttırabilirim": {
+                answer: "Din Kültürü'nde net artırmak için: 1) Kavramları iyi öğren, 2) Ayet ve hadislerin anlamlarını anla, 3) Karşılaştırmalı öğrenme yap, 4) Günlük hayatla ilişkilendir, 5) Etik değerleri içselleştir.",
+                subject: "din",
+                keywords: ["din başarısı", "din geliştirme", "din net artırma", "din nasıl çalışılır"]
+            },
+            
+            // Motivasyon ve Psikoloji
+            "motivasyonum düşük": {
+                answer: "Motivasyonun düştüğünde: 1) Hedeflediğin liseyi düşün, 2) Küçük başarılarını kutla, 3) Düzenli molalar ver, 4) Kendine zaman ayır, 5) Olumlu düşün, 6) Başarı hikayeleri oku. Unutma, emeklerinin karşılığını alacaksın!",
+                subject: "rehberlik",
+                keywords: ["motivasyon eksikliği", "çalışma isteğim yok", "sıkıldım", "isteksizim", "motivasyon kaybı"]
+            },
+            "stres yönetimi": {
+                answer: "Stresi yönetmek için: 1) Düzenli nefes egzersizleri yap, 2) Her gün 15-20 dakika fiziksel aktivite yap, 3) Uyku düzenine dikkat et, 4) Kendine gerçekçi hedefler koy, 5) Hobilerine zaman ayır, 6) Sosyal destek al.",
+                subject: "rehberlik",
+                keywords: ["stresle başa çıkma", "kaygı yönetimi", "sınav stresi", "stres azaltma", "rahatlama teknikleri"]
+            },
+            "sınav kaygısı": {
+                answer: "Sınav kaygısı normaldir. Kaygını azaltmak için: 1) Sınav anında nefes egzersizleri yap, 2) Soruları dikkatli oku, 3) Zor sorularda takılıp kalmadan devam et, 4) Olumlu düşüncelerle kendini motive et, 5) Sınav öncesi iyi uyu ve beslen.",
+                subject: "rehberlik",
+                keywords: ["kaygı", "panik", "endişe", "sınav korkusu", "anksiyete"]
+            },
+            "yorgunum": {
+                answer: "Yorgun hissettiğinde: 1) Kısa bir mola ver, 2) Su iç, 3) Hafif egzersiz yap, 4) Ortamı havalandır, 5) Müzik dinle, 6) 15-20 dakika şekerleme yap. Unutma, dinlenmek de verimli çalışmanın bir parçasıdır!",
+                subject: "rehberlik",
+                keywords: ["bitkinim", "enerjim yok", "yoruldum", "tükenmişlik", "dinlenme ihtiyacı"]
+            },
+            
+            // Sınav Teknikleri
+            "sınav stratejisi": {
+                answer: "İyi bir sınav stratejisi: 1) Kolay sorulardan başla, 2) Zamanı iyi yönet, 3) Turlama tekniği kullan, 4) Soruları dikkatli oku, 5) İşaretleme yaparken dikkatli ol, 6) Son 15 dakikayı kontrol için ayır.",
+                subject: "genel",
+                keywords: ["sınav taktiği", "test çözme teknikleri", "sınav nasıl çözülür", "test stratejisi"]
+            },
+            "zaman yönetimi": {
+                answer: "Sınavda zaman yönetimi için: 1) Her derse ayrılan süreyi bil, 2) Kolay sorulara daha az zaman ayır, 3) Zor soruları işaretleyip geç, 4) Saatine düzenli bak, 5) Son 10 dakikayı boş bırakılan sorulara ayır.",
+                subject: "genel",
+                keywords: ["süre yönetimi", "zaman yetmiyor", "sınavda zaman", "süre problemi"]
+            },
+            "soruları nasıl okumalıyım": {
+                answer: "Soruları doğru okumak için: 1) Önce soru kökünü oku, 2) Seçeneklere geçmeden önce cevabı düşün, 3) Olumsuz ifadelere dikkat et (değildir, yoktur vb.), 4) Altı çizili kelimelere özellikle dikkat et, 5) Paragraf sorularında önce soruyu oku.",
+                subject: "genel",
+                keywords: ["soru okuma teknikleri", "dikkatli okuma", "soru nasıl okunur", "okuma stratejisi"]
+            },
+            
+            // LGS Detayları
+            "lgs kaç soru": {
+                answer: "LGS'de toplam 90 soru var: Türkçe 20, Matematik 20, Fen Bilimleri 20, İnkılap Tarihi 10, İngilizce 10, Din Kültürü 10 soru.",
+                subject: "genel",
+                keywords: ["soru sayısı", "kaç soru var", "toplam soru", "soru adedi"]
+            },
+            "lgs süresi ne kadar": {
+                answer: "LGS iki oturumdan oluşur: 1. oturum 90 dakika (Türkçe, Matematik, Fen), 2. oturum 80 dakika (İnkılap, İngilizce, Din). Toplam 170 dakika sürer.",
+                subject: "genel",
+                keywords: ["sınav süresi", "ne kadar sürer", "sınav süresi ne kadar", "toplam süre"]
+            },
+            "lgs puanı nasıl hesaplanır": {
+                answer: "LGS puanı: Doğru sayısından yanlış sayısının dörtte biri çıkarılarak net hesaplanır. Derslerin ağırlıkları farklıdır: Türkçe 4, Matematik 4, Fen 4, İnkılap 1, İngilizce 1, Din 1 katsayı ile çarpılır. Standart puan hesaplaması yapılır.",
+                subject: "genel",
+                keywords: ["puan hesaplama", "yerleştirme puanı", "lgs puan hesaplama", "puan nasıl hesaplanır"]
+            },
+            "kaç net kaç puan": {
+                answer: "Net-puan ilişkisi her yıl değişir çünkü standart sapmaya göre hesaplanır. Ancak genel olarak 80-85 net arası 450-470 puan, 70-80 net arası 420-450 puan, 60-70 net arası 380-420 puan civarında gelir. Hedef liseye göre net hedefi belirlemelisin.",
+                subject: "genel",
+                keywords: ["net puan karşılığı", "kaç puan alırım", "net puan ilişkisi", "puan karşılığı"]
+            },
+            
+            // Okul ve Tercih
+            "fen lisesi kaç puan": {
+                answer: "Fen liselerinin puanları okula ve yıla göre değişir. İyi fen liseleri genelde 460-500 puan aralığında öğrenci alır. En iyi fen liseleri 480-500 puan ister.",
+                subject: "rehberlik",
+                keywords: ["fen lisesi puanı", "kaç puan lazım", "fen lisesi taban puan", "fen lisesi için kaç puan"]
+            },
+            "anadolu lisesi kaç puan": {
+                answer: "Anadolu liselerinin puanları 350-480 arasında değişir. İyi Anadolu liseleri 420-480 puan aralığında öğrenci alır.",
+                subject: "rehberlik",
+                keywords: ["anadolu lisesi puanı", "lise puanları", "anadolu lisesi için kaç puan", "lise taban puan"]
+            },
+            "tercih yaparken nelere dikkat etmeliyim": {
+                answer: "Tercih yaparken: 1) Puanınıza uygun okulları seçin, 2) Yüzdelik dilimi dikkate alın, 3) Okulun başarısını araştırın, 4) Ulaşım kolaylığını düşünün, 5) İlgi alanlarınıza uygun okulları tercih edin, 6) Tercihlerinizi puana göre sıralayın.",
+                subject: "rehberlik",
+                keywords: ["okul seçimi", "tercih stratejisi", "lise tercihi", "tercih yapma", "okul tercihi"]
+            },
+            
+            // Sağlık ve Beslenme
+            "sınav öncesi nasıl beslenmeliyim": {
+                answer: "Sınav öncesi beslenme: 1) Hafif ve sağlıklı besinler tüket, 2) Kahvaltıyı atlama, 3) Bol su iç, 4) Şekerli gıdalardan uzak dur, 5) Protein ağırlıklı beslen, 6) Sınav sabahı normal kahvaltı yap.",
+                subject: "rehberlik",
+                keywords: ["beslenme önerileri", "sınav sabahı ne yemeli", "sınav öncesi beslenme", "sağlıklı beslenme"]
+            },
+            "uyku düzeni": {
+                answer: "Verimli bir uyku düzeni için: 1) Her gün aynı saatte yatıp kalk, 2) 7-8 saat uyu, 3) Yatmadan önce telefon/tablet kullanma, 4) Yatmadan önce ılık duş al, 5) Odanı karanlık ve serin tut, 6) Sınav gecesi erken yat.",
+                subject: "rehberlik",
+                keywords: ["uyku problemi", "geç yatma", "uyku düzensizliği", "uyku saatleri", "uyku alışkanlığı"]
+            },
+            
+            // Son Hazırlık
+            "sınav sabahı ne yapmalıyım": {
+                answer: "Sınav sabahı: 1) Normal saatinde kalk, 2) Sağlıklı bir kahvaltı yap, 3) Sınav evraklarını kontrol et, 4) Rahat kıyafetler giy, 5) Evden erken çık, 6) Sakin ol ve derin nefes al.",
+                subject: "rehberlik",
+                keywords: ["sınav günü", "sabah hazırlığı", "sınav sabahı ne yapılır", "sınav günü hazırlık"]
+            },
+            "sınavda yanımda ne olmalı": {
+                answer: "Sınavda yanında: 1) Sınava giriş belgesi, 2) Nüfus cüzdanı, 3) En az 2 adet yumuşak uçlu kurşun kalem, 4) Silgi, 5) Kalemtraş, 6) Şeffaf pet şişe su. Saat ve cep telefonu yasaktır!",
+                subject: "genel",
+                keywords: ["sınav gereçleri", "yanımda ne götürmeliyim", "sınav malzemeleri", "sınavda neler olmalı"]
+            },
+            
+            // Teknik Sorular
+            "boş soru bırakmalı mıyım": {
+                answer: "Kesinlikle boş soru bırakma! LGS'de 4 yanlış 1 doğruyu götürdüğü için bilmediğin soruları işaretlemek risklidir. Ancak eğer iki şık arasında kaldıysan, mantıklı olanı işaretlemek daha iyidir.",
+                subject: "genel",
+                keywords: ["boş bırakma", "işaretleme stratejisi", "boş soru", "soru işaretleme"]
+            },
+            "yanlışlar doğruları götürüyor mu": {
+                answer: "Evet, LGS'de 4 yanlış 1 doğruyu götürür. Bu nedenle emin olmadığın soruları rastgele işaretleme. Ancak iki şık arasında kaldığında mantıklı tahminde bulunabilirsin.",
+                subject: "genel",
+                keywords: ["yanlışın etkisi", "4 yanlış 1 doğru", "yanlış cevap etkisi", "yanlış soru etkisi"]
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize speech synthesis
+            if ('speechSynthesis' in window) {
+                appState.speechSynthesis = window.speechSynthesis;
+                // Load Turkish voice if available
+                setTimeout(() => {
+                    const voices = appState.speechSynthesis.getVoices();
+                    const turkishVoice = voices.find(voice => voice.lang.startsWith('tr'));
+                    if (turkishVoice) {
+                        appState.turkishVoice = turkishVoice;
+                    }
+                }, 1000);
+            }
+            
+            // Initialize teacher advice counters
+            initializeTeacherAdviceCounters();
+            
+            // Load saved data from localStorage
+            loadSavedData();
+            
+            // Check if student info exists
+            if (!appState.student.name || appState.student.name === "") {
+                // Show welcome modal
+                const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+                welcomeModal.show();
+            } else {
+                // Add welcome message to chat
+                setTimeout(() => {
+                    addMessageToChat("bot", `Tekrar hoş geldin ${appState.student.name}! LGS hazırlık sürecinde sana rehberlik etmek için buradayım. Hedefin ${appState.student.targetSchool} için birlikte çalışacağız. Nasıl yardımcı olabilirim?`);
+                }, 500);
+            }
+            
+            // Initialize event listeners
+            initializeEventListeners();
+            
+            // Initialize speech recognition if available
+            initializeSpeechRecognition();
+            
+            // Render initial UI
+            renderStudentInfo();
+            renderExamStats();
+            initializePerformanceChart();
+            renderExamHistory();
+            updateTheme(appState.theme);
+            updateFontSize(appState.fontSize);
+            
+            // Update knowledge base count
+            updateKnowledgeBaseCount();
+        });
+
+        // Initialize teacher advice counters
+        function initializeTeacherAdviceCounters() {
+            const subjects = ['türkçe', 'matematik', 'fen', 'inkılap', 'ingilizce', 'din'];
+            subjects.forEach(subject => {
+                appState.teacherAdviceCounters[subject] = {
+                    excellent: 0,
+                    good: 0,
+                    average: 0,
+                    needs_improvement: 0
+                };
+            });
+        }
+
+        // Load saved data from localStorage
+        function loadSavedData() {
+            // Load student data
+            const savedStudent = localStorage.getItem('lgsStudentData');
+            if (savedStudent) {
+                appState.student = JSON.parse(savedStudent);
+            }
+            
+            // Load knowledge base
+            const savedKnowledgeBase = localStorage.getItem('lgsKnowledgeBase');
+            if (savedKnowledgeBase) {
+                appState.knowledgeBase = JSON.parse(savedKnowledgeBase);
+            } else {
+                appState.knowledgeBase = defaultKnowledgeBase;
+            }
+            
+            // Load conversation history
+            const savedConversation = localStorage.getItem('lgsConversation');
+            if (savedConversation) {
+                appState.conversationHistory = JSON.parse(savedConversation);
+                // Render conversation history
+                appState.conversationHistory.forEach(msg => {
+                    if (msg.sender && msg.message) {
+                        addMessageToChat(msg.sender, msg.message, false);
+                    }
+                });
+            }
+            
+            // Load settings
+            const savedSettings = localStorage.getItem('lgsSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                appState.volume = settings.volume || 50;
+                appState.theme = settings.theme || "default";
+                appState.fontSize = settings.fontSize || 1.0;
+                appState.password = settings.password || "1234";
+                appState.textToSpeechEnabled = settings.textToSpeechEnabled !== undefined ? settings.textToSpeechEnabled : true;
+            }
+            
+            // Load exam history
+            const savedExams = localStorage.getItem('lgsExamHistory');
+            if (savedExams) {
+                appState.student.exams = JSON.parse(savedExams);
+            }
+            
+            // Load teacher advice counters
+            const savedAdviceCounters = localStorage.getItem('lgsTeacherAdviceCounters');
+            if (savedAdviceCounters) {
+                appState.teacherAdviceCounters = JSON.parse(savedAdviceCounters);
+            }
+            
+            // If no exams exist, create a default exam from student data
+            if (appState.student.exams.length === 0 && appState.student.name) {
+                const defaultExam = {
+                    id: Date.now(),
+                    name: "İlk Deneme",
+                    date: new Date().toLocaleDateString('tr-TR'),
+                    results: {
+                        'türkçe': { correct: 15, wrong: 3, empty: 2, total: 20 },
+                        'matematik': { correct: 12, wrong: 5, empty: 3, total: 20 },
+                        'fen': { correct: 16, wrong: 2, empty: 2, total: 20 },
+                        'inkılap': { correct: 8, wrong: 1, empty: 1, total: 10 },
+                        'ingilizce': { correct: 9, wrong: 1, empty: 0, total: 10 },
+                        'din': { correct: 10, wrong: 0, empty: 0, total: 10 }
+                    }
+                };
+                appState.student.exams.push(defaultExam);
+                appState.student.currentExam = 0;
+                saveExamHistory();
+            }
+        }
+
+        // Save data to localStorage
+        function saveStudentData() {
+            localStorage.setItem('lgsStudentData', JSON.stringify(appState.student));
+        }
+        
+        function saveKnowledgeBase() {
+            localStorage.setItem('lgsKnowledgeBase', JSON.stringify(appState.knowledgeBase));
+            updateKnowledgeBaseCount();
+        }
+        
+        function saveConversation() {
+            localStorage.setItem('lgsConversation', JSON.stringify(appState.conversationHistory));
+        }
+        
+        function saveSettings() {
+            const settings = {
+                volume: appState.volume,
+                theme: appState.theme,
+                fontSize: appState.fontSize,
+                password: appState.password,
+                textToSpeechEnabled: appState.textToSpeechEnabled
+            };
+            localStorage.setItem('lgsSettings', JSON.stringify(settings));
+        }
+        
+        function saveExamHistory() {
+            localStorage.setItem('lgsExamHistory', JSON.stringify(appState.student.exams));
+        }
+        
+        function saveTeacherAdviceCounters() {
+            localStorage.setItem('lgsTeacherAdviceCounters', JSON.stringify(appState.teacherAdviceCounters));
+        }
+        
+        // Update knowledge base count
+        function updateKnowledgeBaseCount() {
+            const count = Object.keys(appState.knowledgeBase).length;
+            document.getElementById('knowledgeBaseCount').textContent = count;
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Send message on button click
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
+            
+            // Send message on Enter key
+            document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Voice button
+            document.getElementById('voiceButton').addEventListener('click', toggleVoiceRecognition);
+            
+            // Volume button
+            document.getElementById('volumeButton').addEventListener('click', toggleVolumeControl);
+            
+            // Close volume button
+            document.getElementById('closeVolumeBtn').addEventListener('click', closeVolumeControl);
+            
+            // Mute button
+            document.getElementById('muteBtn').addEventListener('click', toggleMute);
+            
+            // Text to speech toggle
+            document.getElementById('textToSpeechToggle').addEventListener('change', function() {
+                appState.textToSpeechEnabled = this.checked;
+                document.getElementById('floatingTextToSpeechToggle').checked = this.checked;
+                saveSettings();
+                showNotification(appState.textToSpeechEnabled ? "Metin seslendirme açık" : "Metin seslendirme kapalı", "info");
+            });
+            
+            document.getElementById('floatingTextToSpeechToggle').addEventListener('change', function() {
+                appState.textToSpeechEnabled = this.checked;
+                document.getElementById('textToSpeechToggle').checked = this.checked;
+                saveSettings();
+                showNotification(appState.textToSpeechEnabled ? "Metin seslendirme açık" : "Metin seslendirme kapalı", "info");
+            });
+            
+            // Volume sliders
+            document.getElementById('volumeSlider').addEventListener('input', function() {
+                appState.volume = parseInt(this.value);
+                document.getElementById('floatingVolumeSlider').value = appState.volume;
+                saveSettings();
+            });
+            
+            document.getElementById('floatingVolumeSlider').addEventListener('input', function() {
+                appState.volume = parseInt(this.value);
+                document.getElementById('volumeSlider').value = appState.volume;
+                saveSettings();
+            });
+            
+            // Quick questions
+            document.querySelectorAll('.quick-question').forEach(item => {
+                item.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    document.getElementById('messageInput').value = question;
+                    sendMessage();
+                });
+            });
+            
+            // Teacher avatars click events
+            document.querySelectorAll('.teacher-avatar').forEach(avatar => {
+                avatar.addEventListener('click', function() {
+                    const subject = this.getAttribute('data-subject');
+                    const teacherName = this.getAttribute('data-teacher');
+                    getTeacherAdvice(subject, teacherName);
+                });
+            });
+            
+            // Start chat button
+            document.getElementById('startChatBtn').addEventListener('click', function() {
+                saveStudentInfo();
+                const welcomeModal = bootstrap.Modal.getInstance(document.getElementById('welcomeModal'));
+                welcomeModal.hide();
+                
+                // Add welcome message
+                setTimeout(() => {
+                    addMessageToChat("bot", `Merhaba ${appState.student.name}! LGS hazırlık sürecinde sana rehberlik etmek için buradayım. Hedefin ${appState.student.targetSchool} için birlikte çalışacağız. Hobilerini de (${appState.student.hobbies.join(', ')}) dikkate alarak sana özel tavsiyelerde bulunacağım. Nasıl yardımcı olabilirim?`);
+                }, 500);
+            });
+            
+            // Edit profile button
+            document.getElementById('editProfileBtn').addEventListener('click', function() {
+                const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+                welcomeModal.show();
+            });
+            
+            // Add exam button
+            document.getElementById('addExamBtn').addEventListener('click', function() {
+                const addExamModal = new bootstrap.Modal(document.getElementById('addExamModal'));
+                addExamModal.show();
+            });
+            
+            // Save exam button
+            document.getElementById('saveExamBtn').addEventListener('click', saveNewExam);
+            
+            // Settings button
+            document.getElementById('settingsBtn').addEventListener('click', openSettings);
+            
+            // Close settings button
+            document.getElementById('closeSettingsBtn').addEventListener('click', closeSettings);
+            
+            // Settings overlay
+            document.getElementById('settingsOverlay').addEventListener('click', closeSettings);
+            
+            // Theme selection
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const theme = this.getAttribute('data-theme');
+                    updateTheme(theme);
+                });
+            });
+            
+            // Font size controls
+            document.getElementById('increaseFontBtn').addEventListener('click', function() {
+                appState.fontSize = Math.min(1.5, appState.fontSize + 0.1);
+                updateFontSize(appState.fontSize);
+                saveSettings();
+            });
+            
+            document.getElementById('decreaseFontBtn').addEventListener('click', function() {
+                appState.fontSize = Math.max(0.8, appState.fontSize - 0.1);
+                updateFontSize(appState.fontSize);
+                saveSettings();
+            });
+            
+            // Login password button
+            document.getElementById('loginPasswordBtn').addEventListener('click', function() {
+                const password = document.getElementById('passwordInput').value;
+                if (password === appState.password) {
+                    appState.isAuthenticated = true;
+                    document.getElementById('knowledgeBaseSection').classList.add('active');
+                    document.getElementById('passwordSection').style.display = 'none';
+                    document.getElementById('passwordInput').value = '';
+                    showNotification("Şifre doğru! Veritabanı yönetimine erişiminiz açıldı.", "success");
+                } else {
+                    showNotification("Şifre yanlış! Varsayılan şifre: 1234", "error");
+                }
+            });
+            
+            // Change password button
+            document.getElementById('changePasswordBtn').addEventListener('click', changePassword);
+            
+            // Delete password button
+            document.getElementById('deletePasswordBtn').addEventListener('click', deletePassword);
+            
+            // Export knowledge base button
+            document.getElementById('exportKnowledgeBaseBtn').addEventListener('click', exportKnowledgeBase);
+            
+            // Import knowledge base button
+            document.getElementById('importKnowledgeBaseBtn').addEventListener('click', function() {
+                document.getElementById('knowledgeBaseFileInput').click();
+            });
+            
+            // Knowledge base file input
+            document.getElementById('knowledgeBaseFileInput').addEventListener('change', importKnowledgeBase);
+            
+            // Manage knowledge base button
+            document.getElementById('manageKnowledgeBaseBtn').addEventListener('click', function() {
+                if (appState.isAuthenticated) {
+                    openKnowledgeBaseManager();
+                } else {
+                    showNotification("Önce şifre girmelisiniz!", "error");
+                }
+            });
+            
+            // Reset app button
+            document.getElementById('resetAppBtn').addEventListener('click', resetApp);
+        }
+
+        // Get teacher advice based on student performance - DÜZELTİLMİŞ VERSİYON
+        function getTeacherAdvice(subject, teacherName) {
+            if (appState.student.exams.length === 0) {
+                addMessageToChat("bot", `Henüz bir deneme sınavı eklememişsiniz. Önce bir deneme sınavı eklemelisiniz ki ${teacherName} olarak size tavsiyede bulunabileyim.`);
+                return;
+            }
+            
+            const currentExam = appState.student.exams[appState.student.currentExam];
+            const result = currentExam.results[subject];
+            
+            if (!result) {
+                addMessageToChat("bot", `${teacherName} olarak size tavsiyede bulunmak istiyorum ancak bu derse ait bir sonuç bulamadım. Lütfen önce deneme sınavı sonuçlarınızı girin.`);
+                return;
+            }
+            
+            // Hata kontrolü - result değerlerinin var olduğundan emin ol
+            const correct = result.correct || 0;
+            const wrong = result.wrong || 0;
+            const empty = result.empty || 0;
+            const total = result.total || 20; // Varsayılan değer
+            
+            const net = correct - (wrong / 4); // LGS calculation: 4 yanlış 1 doğruyu götürür
+            const percentage = (correct / total) * 100;
+            
+            // Determine performance level
+            let performanceLevel;
+            if (percentage >= 80) {
+                performanceLevel = 'excellent';
+            } else if (percentage >= 60) {
+                performanceLevel = 'good';
+            } else if (percentage >= 40) {
+                performanceLevel = 'average';
+            } else {
+                performanceLevel = 'needs_improvement';
+            }
+            
+            // Get the appropriate advice variant
+            const adviceVariants = teacherAdviceVariants[performanceLevel];
+            const counter = appState.teacherAdviceCounters[subject][performanceLevel];
+            const adviceIndex = counter % adviceVariants.length;
+            const advice = adviceVariants[adviceIndex];
+            
+            // Update counter for next time
+            appState.teacherAdviceCounters[subject][performanceLevel]++;
+            saveTeacherAdviceCounters();
+            
+            // Prepare the message
+            let message = `Merhaba, ben ${teacherName}. `;
+            message += `Bu derste ${net.toFixed(2)} net yapmışsın (${correct} doğru, ${wrong} yanlış, ${empty} boş). `;
+            message += `Bu, soruların %${percentage.toFixed(0)}'ını doğru yaptığın anlamına geliyor. `;
+            message += advice;
+            
+            // Add specific subject advice with personalized recommendations
+            switch(subject) {
+                case 'türkçe':
+                    if (percentage < 60) {
+                        message += " Türkçe'de özellikle paragraf sorularında pratik yapmalı ve okuma hızını arttırmalısın. ";
+                        message += "Dil bilgisi konularını tekrar etmeyi unutma!";
+                    } else if (percentage < 80) {
+                        message += " Türkçe'de iyi bir seviyedesin. Paragraf sorularında dikkatini artırarak netlerini yükseltebilirsin.";
+                    } else {
+                        message += " Türkçe'de çok başarılısın! Diğer derslere de bu performansı gösterirsen hedefine rahat ulaşırsın.";
+                    }
+                    break;
+                case 'matematik':
+                    if (percentage < 60) {
+                        message += " Matematikte temel konuları iyice anlamalısın. Problem çözme becerilerini geliştirmek için günde en az 20 matematik sorusu çözmelisin.";
+                    } else if (percentage < 80) {
+                        message += " Matematikte iyi bir seviyedesin. Zor sorular üzerinde daha fazla pratik yaparak netlerini artırabilirsin.";
+                    } else {
+                        message += " Matematikte mükemmel bir seviyedesin! Bu başarıyı sürdürmek için farklı kaynaklardan zor sorular çözmeye devam et.";
+                    }
+                    break;
+                case 'fen':
+                    if (percentage < 60) {
+                        message += " Fen bilimlerinde deney ve gözlem becerilerini geliştirmelisin. Konuları günlük hayatla ilişkilendirerek daha iyi anlayabilirsin.";
+                    } else if (percentage < 80) {
+                        message += " Fen bilimlerinde iyi bir seviyedesin. Görsel hafıza tekniklerini kullanarak başarını daha da artırabilirsin.";
+                    } else {
+                        message += " Fen bilimlerinde harika bir seviyedesin! Laboratuvar becerilerini geliştirerek bu başarıyı pekiştirebilirsin.";
+                    }
+                    break;
+                case 'inkılap':
+                    if (percentage < 60) {
+                        message += " İnkılap Tarihi'nde kronolojik sırayı iyi öğrenmeli ve olayların neden-sonuç ilişkisini kavramalısın.";
+                    } else if (percentage < 80) {
+                        message += " İnkılap Tarihi'nde iyi bir seviyedesin. Kavramları daha iyi öğrenerek ve haritaları inceleyerek netlerini artırabilirsin.";
+                    } else {
+                        message += " İnkılap Tarihi'nde çok başarılısın! Bu derste öğrendiklerini güncel hayatla ilişkilendirmeye devam et.";
+                    }
+                    break;
+                case 'ingilizce':
+                    if (percentage < 60) {
+                        message += " İngilizce'de kelime dağarcığını geliştirmeli ve gramer kurallarını iyi öğrenmelisin. Okuma parçalarını anlama becerini geliştir.";
+                    } else if (percentage < 80) {
+                        message += " İngilizce'de iyi bir seviyedesin. Dinleme egzersizleri yaparak ve İngilizce içerikler tüketerek daha da ilerleyebilirsin.";
+                    } else {
+                        message += " İngilizce'de harika bir seviyedesin! Pratik yapmak için İngilizce dizi/film izlemeye veya İngilizce kitaplar okumaya devam et.";
+                    }
+                    break;
+                case 'din':
+                    if (percentage < 60) {
+                        message += " Din Kültürü'nde kavramları iyi öğrenmeli ve ayet/hadislerin anlamlarını anlamalısın. Etik değerleri içselleştir.";
+                    } else if (percentage < 80) {
+                        message += " Din Kültürü'nde iyi bir seviyedesin. Karşılaştırmalı öğrenme yaparak ve günlük hayatla ilişkilendirerek başarını artırabilirsin.";
+                    } else {
+                        message += " Din Kültürü'nde çok başarılısın! Bu derste öğrendiklerini hayatına uygulamaya devam et.";
+                    }
+                    break;
+            }
+            
+            // Add encouragement based on days remaining until LGS
+            const today = new Date();
+            const timeDiff = lgsDate.getTime() - today.getTime();
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            if (daysRemaining > 0) {
+                message += ` LGS'ye ${daysRemaining} gün kaldı. Planlı çalışmaya devam edersen hedefine mutlaka ulaşırsın!`;
+            }
+            
+            // Add message to chat
+            addMessageToChat("bot", message);
+            
+            // Text-to-speech for teacher advice
+            if (appState.textToSpeechEnabled) {
+                const ttsMessage = `Merhaba, ben ${teacherName}. Bu derste ${net.toFixed(2)} net yapmışsın. ${percentage.toFixed(0)} yüzde başarı oranıyla ${advice}`;
+                speakText(ttsMessage);
+            }
+            
+            // Show notification
+            showNotification(`${teacherName} size tavsiyede bulundu!`, "info");
+        }
+
+        // Toggle volume control panel
+        function toggleVolumeControl() {
+            const floatingVolume = document.getElementById('floatingVolume');
+            floatingVolume.classList.toggle('show');
+            
+            // Update toggle state
+            document.getElementById('floatingTextToSpeechToggle').checked = appState.textToSpeechEnabled;
+            document.getElementById('floatingVolumeSlider').value = appState.volume;
+        }
+
+        // Close volume control panel
+        function closeVolumeControl() {
+            document.getElementById('floatingVolume').classList.remove('show');
+        }
+
+        // Toggle mute
+        function toggleMute() {
+            if (appState.volume > 0) {
+                appState.previousVolume = appState.volume;
+                appState.volume = 0;
+                document.getElementById('muteBtn').innerHTML = '<i class="fas fa-volume-up me-1"></i> Sesi Aç';
+            } else {
+                appState.volume = appState.previousVolume || 50;
+                document.getElementById('muteBtn').innerHTML = '<i class="fas fa-volume-mute me-1"></i> Sesi Kapat';
+            }
+            
+            document.getElementById('volumeSlider').value = appState.volume;
+            document.getElementById('floatingVolumeSlider').value = appState.volume;
+            saveSettings();
+            
+            showNotification(appState.volume === 0 ? "Ses kapalı" : `Ses seviyesi: %${appState.volume}`, "info");
+        }
+
+        // Update theme
+        function updateTheme(themeName) {
+            appState.theme = themeName;
+            
+            // Update body class
+            document.body.className = `theme-${themeName}`;
+            
+            // Update theme options active state
+            document.querySelectorAll('.theme-option').forEach(option => {
+                if (option.getAttribute('data-theme') === themeName) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+            
+            // Save settings
+            saveSettings();
+        }
+
+        // Update font size
+        function updateFontSize(size) {
+            appState.fontSize = size;
+            document.documentElement.style.setProperty('--font-size', size + 'rem');
+            
+            // Update font size display
+            const fontSizeDisplay = document.getElementById('fontSizeDisplay');
+            if (size < 1.0) {
+                fontSizeDisplay.textContent = 'Küçük';
+            } else if (size > 1.2) {
+                fontSizeDisplay.textContent = 'Büyük';
+            } else {
+                fontSizeDisplay.textContent = 'Orta';
+            }
+        }
+
+        // Open settings
+        function openSettings() {
+            document.getElementById('settingsPanel').classList.add('open');
+            document.getElementById('settingsOverlay').classList.add('active');
+            
+            // Update settings UI
+            document.getElementById('textToSpeechToggle').checked = appState.textToSpeechEnabled;
+            document.getElementById('volumeSlider').value = appState.volume;
+            
+            // Reset password section visibility
+            document.getElementById('passwordSection').style.display = 'block';
+            if (!appState.isAuthenticated) {
+                document.getElementById('knowledgeBaseSection').classList.remove('active');
+            }
+        }
+
+        // Close settings
+        function closeSettings() {
+            document.getElementById('settingsPanel').classList.remove('open');
+            document.getElementById('settingsOverlay').classList.remove('active');
+            appState.isAuthenticated = false;
+            document.getElementById('knowledgeBaseSection').classList.remove('active');
+        }
+
+        // Change password
+        function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (currentPassword !== appState.password) {
+                showNotification("Mevcut şifre yanlış!", "error");
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                showNotification("Yeni şifreler eşleşmiyor!", "error");
+                return;
+            }
+            
+            if (newPassword.length < 4) {
+                showNotification("Şifre en az 4 karakter olmalı!", "error");
+                return;
+            }
+            
+            appState.password = newPassword;
+            saveSettings();
+            
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            
+            showNotification("Şifre başarıyla değiştirildi!", "success");
+        }
+
+        // Delete password (reset to default)
+        function deletePassword() {
+            if (confirm("Şifreyi silmek istediğinize emin misiniz? Şifre varsayılan '1234' olarak sıfırlanacak.")) {
+                appState.password = "1234";
+                saveSettings();
+                showNotification("Şifre başarıyla sıfırlandı! Yeni şifre: 1234", "success");
+            }
+        }
+
+        // Export knowledge base
+        function exportKnowledgeBase() {
+            if (!appState.isAuthenticated) {
+                showNotification("Önce şifre girmelisiniz!", "error");
+                return;
+            }
+            
+            const dataStr = JSON.stringify(appState.knowledgeBase, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'lgs-knowledge-base-' + new Date().toISOString().split('T')[0] + '.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification("Tüm soru-cevaplar JSON formatında indirildi!", "success");
+        }
+
+        // Import knowledge base
+        function importKnowledgeBase(event) {
+            if (!appState.isAuthenticated) {
+                showNotification("Önce şifre girmelisiniz!", "error");
+                return;
+            }
+            
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    let addedCount = 0;
+                    let updatedCount = 0;
+                    
+                    // Merge imported data with existing knowledge base
+                    // New entries will be added, existing ones will be updated
+                    Object.keys(importedData).forEach(key => {
+                        if (appState.knowledgeBase[key]) {
+                            updatedCount++;
+                        } else {
+                            addedCount++;
+                        }
+                        appState.knowledgeBase[key] = importedData[key];
+                    });
+                    
+                    saveKnowledgeBase();
+                    showNotification(`Soru-cevap veritabanı başarıyla yüklendi! ${addedCount} yeni soru eklendi, ${updatedCount} soru güncellendi. Toplam soru sayısı: ${Object.keys(appState.knowledgeBase).length}`, "success");
+                    
+                    // Update knowledge base count
+                    updateKnowledgeBaseCount();
+                    
+                    // Clear file input
+                    event.target.value = '';
+                } catch (error) {
+                    showNotification("Dosya okunamadı! Geçerli bir JSON dosyası seçin.", "error");
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // Open knowledge base manager
+        function openKnowledgeBaseManager() {
+            renderKnowledgeBaseList();
+            const knowledgeBaseModal = new bootstrap.Modal(document.getElementById('knowledgeBaseModal'));
+            knowledgeBaseModal.show();
+        }
+
+        // Render knowledge base list
+        function renderKnowledgeBaseList() {
+            const container = document.getElementById('knowledgeBaseItemsContainer');
+            let html = '';
+            let count = 0;
+            
+            Object.keys(appState.knowledgeBase).forEach((question, index) => {
+                const item = appState.knowledgeBase[question];
+                count++;
+                
+                html += `
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="question-checkbox" data-question="${question}">
+                        </td>
+                        <td>${question}</td>
+                        <td>${item.answer.length > 100 ? item.answer.substring(0, 100) + '...' : item.answer}</td>
+                        <td>
+                            <span class="badge bg-${getSubjectBadgeColor(item.subject)}">${item.subject}</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary edit-question-btn" data-question="${question}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger delete-question-btn" data-question="${question}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            container.innerHTML = html;
+            document.getElementById('totalQuestionsCount').textContent = count;
+            
+            // Add event listeners
+            document.getElementById('selectAllCheckbox').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.question-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                updateSelectedQuestions();
+            });
+            
+            // Checkbox change events
+            document.querySelectorAll('.question-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedQuestions);
+            });
+            
+            // Edit buttons
+            document.querySelectorAll('.edit-question-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    editQuestionAnswer(question);
+                });
+            });
+            
+            // Delete buttons
+            document.querySelectorAll('.delete-question-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const question = this.getAttribute('data-question');
+                    deleteQuestionAnswer(question);
+                });
+            });
+            
+            // Delete selected button
+            document.getElementById('deleteSelectedBtn').addEventListener('click', deleteSelectedQuestions);
+            
+            // Add event listener to add new QA button
+            document.getElementById('addNewQABtn').addEventListener('click', addNewQuestionAnswer);
+            
+            // Add event listener to save button
+            document.getElementById('saveKnowledgeBaseBtn').addEventListener('click', saveKnowledgeBaseChanges);
+        }
+
+        // Get badge color for subject
+        function getSubjectBadgeColor(subject) {
+            switch(subject) {
+                case 'türkçe': return 'danger';
+                case 'matematik': return 'primary';
+                case 'fen': return 'success';
+                case 'inkılap': return 'warning';
+                case 'ingilizce': return 'info';
+                case 'din': return 'secondary';
+                case 'rehberlik': return 'dark';
+                default: return 'secondary';
+            }
+        }
+
+        // Update selected questions
+        function updateSelectedQuestions() {
+            appState.selectedQuestions = [];
+            document.querySelectorAll('.question-checkbox:checked').forEach(checkbox => {
+                appState.selectedQuestions.push(checkbox.getAttribute('data-question'));
+            });
+            
+            const deleteBtn = document.getElementById('deleteSelectedBtn');
+            if (appState.selectedQuestions.length > 0) {
+                deleteBtn.textContent = `Seçilenleri Sil (${appState.selectedQuestions.length})`;
+                deleteBtn.disabled = false;
+            } else {
+                deleteBtn.textContent = 'Seçilenleri Sil';
+                deleteBtn.disabled = true;
+            }
+        }
+
+        // Add new question answer
+        function addNewQuestionAnswer() {
+            const container = document.getElementById('knowledgeBaseItemsContainer');
+            const newRow = document.createElement('tr');
+            newRow.className = 'table-primary';
+            newRow.innerHTML = `
+                <td></td>
+                <td>
+                    <input type="text" class="form-control form-control-sm new-question" placeholder="Soruyu girin">
+                </td>
+                <td>
+                    <textarea class="form-control form-control-sm new-answer" placeholder="Cevabı girin" rows="2"></textarea>
+                </td>
+                <td>
+                    <select class="form-select form-select-sm new-subject">
+                        <option value="genel">Genel</option>
+                        <option value="türkçe">Türkçe</option>
+                        <option value="matematik">Matematik</option>
+                        <option value="fen">Fen Bilimleri</option>
+                        <option value="inkılap">İnkılap Tarihi</option>
+                        <option value="ingilizce">İngilizce</option>
+                        <option value="din">Din Kültürü</option>
+                        <option value="rehberlik">Rehberlik</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-success save-new-qa-btn">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button class="btn btn-sm btn-secondary cancel-new-qa-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </td>
+            `;
+            
+            container.insertBefore(newRow, container.firstChild);
+            
+            // Focus on question input
+            newRow.querySelector('.new-question').focus();
+            
+            // Add event listeners
+            newRow.querySelector('.save-new-qa-btn').addEventListener('click', function() {
+                const row = this.closest('tr');
+                const question = row.querySelector('.new-question').value.trim().toLowerCase();
+                const answer = row.querySelector('.new-answer').value.trim();
+                const subject = row.querySelector('.new-subject').value;
+                
+                if (!question || !answer) {
+                    showNotification("Soru ve cevap alanları boş olamaz!", "error");
+                    return;
+                }
+                
+                if (appState.knowledgeBase[question]) {
+                    showNotification("Bu soru zaten var! Lütfen farklı bir soru girin.", "error");
+                    return;
+                }
+                
+                appState.knowledgeBase[question] = {
+                    answer: answer,
+                    subject: subject,
+                    keywords: []
+                };
+                
+                saveKnowledgeBase();
+                renderKnowledgeBaseList();
+                showNotification("Yeni soru-cevap eklendi!", "success");
+            });
+            
+            newRow.querySelector('.cancel-new-qa-btn').addEventListener('click', function() {
+                renderKnowledgeBaseList();
+            });
+        }
+
+        // Edit question answer
+        function editQuestionAnswer(question) {
+            const item = appState.knowledgeBase[question];
+            if (!item) return;
+            
+            // Find the row and replace with edit form
+            const rows = document.querySelectorAll('#knowledgeBaseItemsContainer tr');
+            rows.forEach(row => {
+                const checkbox = row.querySelector('.question-checkbox');
+                if (checkbox && checkbox.getAttribute('data-question') === question) {
+                    row.className = 'table-warning';
+                    row.innerHTML = `
+                        <td></td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm edit-question" value="${question}" readonly>
+                        </td>
+                        <td>
+                            <textarea class="form-control form-control-sm edit-answer" rows="2">${item.answer}</textarea>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm edit-subject">
+                                <option value="genel" ${item.subject === 'genel' ? 'selected' : ''}>Genel</option>
+                                <option value="türkçe" ${item.subject === 'türkçe' ? 'selected' : ''}>Türkçe</option>
+                                <option value="matematik" ${item.subject === 'matematik' ? 'selected' : ''}>Matematik</option>
+                                <option value="fen" ${item.subject === 'fen' ? 'selected' : ''}>Fen Bilimleri</option>
+                                <option value="inkılap" ${item.subject === 'inkılap' ? 'selected' : ''}>İnkılap Tarihi</option>
+                                <option value="ingilizce" ${item.subject === 'ingilizce' ? 'selected' : ''}>İngilizce</option>
+                                <option value="din" ${item.subject === 'din' ? 'selected' : ''}>Din Kültürü</option>
+                                <option value="rehberlik" ${item.subject === 'rehberlik' ? 'selected' : ''}>Rehberlik</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success save-edit-qa-btn">
+                                <i class="fas fa-save"></i>
+                            </button>
+                            <button class="btn btn-sm btn-secondary cancel-edit-qa-btn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    // Add event listeners
+                    row.querySelector('.save-edit-qa-btn').addEventListener('click', function() {
+                        const newAnswer = row.querySelector('.edit-answer').value.trim();
+                        const newSubject = row.querySelector('.edit-subject').value;
+                        
+                        if (!newAnswer) {
+                            showNotification("Cevap alanı boş olamaz!", "error");
+                            return;
+                        }
+                        
+                        appState.knowledgeBase[question].answer = newAnswer;
+                        appState.knowledgeBase[question].subject = newSubject;
+                        
+                        saveKnowledgeBase();
+                        renderKnowledgeBaseList();
+                        showNotification("Soru-cevap güncellendi!", "success");
+                    });
+                    
+                    row.querySelector('.cancel-edit-qa-btn').addEventListener('click', function() {
+                        renderKnowledgeBaseList();
+                    });
+                }
+            });
+        }
+
+        // Delete question answer
+        function deleteQuestionAnswer(question) {
+            if (confirm(`"${question}" sorusunu silmek istediğinize emin misiniz?`)) {
+                delete appState.knowledgeBase[question];
+                saveKnowledgeBase();
+                renderKnowledgeBaseList();
+                showNotification("Soru-cevap silindi!", "success");
+            }
+        }
+
+        // Delete selected questions
+        function deleteSelectedQuestions() {
+            if (appState.selectedQuestions.length === 0) {
+                showNotification("Silinecek soru seçmediniz!", "error");
+                return;
+            }
+            
+            if (confirm(`${appState.selectedQuestions.length} soruyu silmek istediğinize emin misiniz?`)) {
+                appState.selectedQuestions.forEach(question => {
+                    delete appState.knowledgeBase[question];
+                });
+                
+                saveKnowledgeBase();
+                renderKnowledgeBaseList();
+                showNotification(`${appState.selectedQuestions.length} soru silindi!`, "success");
+                appState.selectedQuestions = [];
+            }
+        }
+
+        // Save knowledge base changes
+        function saveKnowledgeBaseChanges() {
+            saveKnowledgeBase();
+            showNotification("Değişiklikler kaydedildi!", "success");
+        }
+
+        // Reset app
+        function resetApp() {
+            if (confirm("Tüm verileriniz silinecek. Emin misiniz?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Save student info from form - DÜZELTİLMİŞ VERSİYON
+        function saveStudentInfo() {
+            appState.student.name = document.getElementById('studentName').value;
+            appState.student.targetSchool = document.getElementById('targetSchool').value;
+            appState.student.hobbies = document.getElementById('hobbies').value.split(',').map(h => h.trim()).filter(h => h);
+            
+            // Save exam results to current exam
+            if (appState.student.exams.length === 0) {
+                appState.student.exams.push({
+                    id: Date.now(),
+                    name: "İlk Deneme",
+                    date: new Date().toLocaleDateString('tr-TR'),
+                    results: {}
+                });
+                appState.student.currentExam = 0;
+            }
+            
+            const currentExam = appState.student.exams[appState.student.currentExam];
+            
+            // Branş anahtarlarını doğru kullan - getTeacherAdvice fonksiyonuyla eşleşmeli
+            currentExam.results['türkçe'] = {
+                correct: parseInt(document.getElementById('turkishCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('turkishWrong').value) || 0,
+                empty: parseInt(document.getElementById('turkishEmpty').value) || 0,
+                total: 20
+            };
+            
+            currentExam.results['matematik'] = {
+                correct: parseInt(document.getElementById('mathCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('mathWrong').value) || 0,
+                empty: parseInt(document.getElementById('mathEmpty').value) || 0,
+                total: 20
+            };
+            
+            currentExam.results['fen'] = {
+                correct: parseInt(document.getElementById('scienceCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('scienceWrong').value) || 0,
+                empty: parseInt(document.getElementById('scienceEmpty').value) || 0,
+                total: 20
+            };
+            
+            currentExam.results['inkılap'] = {
+                correct: parseInt(document.getElementById('historyCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('historyWrong').value) || 0,
+                empty: parseInt(document.getElementById('historyEmpty').value) || 0,
+                total: 10
+            };
+            
+            currentExam.results['ingilizce'] = {
+                correct: parseInt(document.getElementById('englishCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('englishWrong').value) || 0,
+                empty: parseInt(document.getElementById('englishEmpty').value) || 0,
+                total: 10
+            };
+            
+            currentExam.results['din'] = {
+                correct: parseInt(document.getElementById('religionCorrect').value) || 0,
+                wrong: parseInt(document.getElementById('religionWrong').value) || 0,
+                empty: parseInt(document.getElementById('religionEmpty').value) || 0,
+                total: 10
+            };
+            
+            // Save data
+            saveStudentData();
+            saveExamHistory();
+            
+            // Update UI
+            renderStudentInfo();
+            renderExamStats();
+            updatePerformanceChart();
+            renderExamHistory();
+            
+            showNotification("Profil bilgilerin başarıyla güncellendi!", "success");
+        }
+
+        // Save new exam - DÜZELTİLMİŞ VERSİYON
+        function saveNewExam() {
+            const examName = document.getElementById('examName').value.trim() || `Deneme ${appState.student.exams.length + 1}`;
+            
+            const newExam = {
+                id: Date.now(),
+                name: examName,
+                date: new Date().toLocaleDateString('tr-TR'),
+                results: {
+                    'türkçe': {
+                        correct: parseInt(document.getElementById('newTurkishCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newTurkishWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newTurkishEmpty').value) || 0,
+                        total: 20
+                    },
+                    'matematik': {
+                        correct: parseInt(document.getElementById('newMathCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newMathWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newMathEmpty').value) || 0,
+                        total: 20
+                    },
+                    'fen': {
+                        correct: parseInt(document.getElementById('newScienceCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newScienceWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newScienceEmpty').value) || 0,
+                        total: 20
+                    },
+                    'inkılap': {
+                        correct: parseInt(document.getElementById('newHistoryCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newHistoryWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newHistoryEmpty').value) || 0,
+                        total: 10
+                    },
+                    'ingilizce': {
+                        correct: parseInt(document.getElementById('newEnglishCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newEnglishWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newEnglishEmpty').value) || 0,
+                        total: 10
+                    },
+                    'din': {
+                        correct: parseInt(document.getElementById('newReligionCorrect').value) || 0,
+                        wrong: parseInt(document.getElementById('newReligionWrong').value) || 0,
+                        empty: parseInt(document.getElementById('newReligionEmpty').value) || 0,
+                        total: 10
+                    }
+                }
+            };
+            
+            appState.student.exams.push(newExam);
+            appState.student.currentExam = appState.student.exams.length - 1;
+            
+            // Save data
+            saveExamHistory();
+            saveStudentData();
+            
+            // Update UI
+            renderExamStats();
+            updatePerformanceChart();
+            renderExamHistory();
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('addExamModal')).hide();
+            
+            // Clear form
+            document.getElementById('examName').value = '';
+            document.getElementById('newTurkishCorrect').value = '0';
+            document.getElementById('newTurkishWrong').value = '0';
+            document.getElementById('newTurkishEmpty').value = '0';
+            document.getElementById('newMathCorrect').value = '0';
+            document.getElementById('newMathWrong').value = '0';
+            document.getElementById('newMathEmpty').value = '0';
+            document.getElementById('newScienceCorrect').value = '0';
+            document.getElementById('newScienceWrong').value = '0';
+            document.getElementById('newScienceEmpty').value = '0';
+            document.getElementById('newHistoryCorrect').value = '0';
+            document.getElementById('newHistoryWrong').value = '0';
+            document.getElementById('newHistoryEmpty').value = '0';
+            document.getElementById('newEnglishCorrect').value = '0';
+            document.getElementById('newEnglishWrong').value = '0';
+            document.getElementById('newEnglishEmpty').value = '0';
+            document.getElementById('newReligionCorrect').value = '0';
+            document.getElementById('newReligionWrong').value = '0';
+            document.getElementById('newReligionEmpty').value = '0';
+            
+            // Notify AI bot
+            addMessageToChat("bot", `Yeni bir deneme sınavı ekledin: "${examName}". Sonuçlarına göre analiz yapmamı ister misin?`);
+            
+            showNotification("Yeni deneme sınavı başarıyla eklendi!", "success");
+        }
+
+        // Render student info
+        function renderStudentInfo() {
+            const studentInfoDiv = document.getElementById('studentInfo');
+            
+            let html = `
+                <div class="d-flex align-items-center mb-3">
+                    <div class="message-avatar user-message">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">${appState.student.name || "Öğrenci"}</h6>
+                        <small class="text-muted">LGS Öğrencisi</small>
+                    </div>
+                </div>
+                <p><strong>Hedef Lise:</strong> ${appState.student.targetSchool || "Belirtilmemiş"}</p>
+                <p><strong>Hobiler:</strong> ${appState.student.hobbies.length > 0 ? appState.student.hobbies.join(', ') : "Belirtilmemiş"}</p>
+                <p><strong>Toplam Deneme:</strong> ${appState.student.exams.length}</p>
+            `;
+            
+            studentInfoDiv.innerHTML = html;
+        }
+
+        // Render exam stats - DÜZELTİLMİŞ VERSİYON
+        function renderExamStats() {
+            const examStatsDiv = document.getElementById('examStats');
+            
+            if (appState.student.exams.length === 0) {
+                examStatsDiv.innerHTML = '<p class="text-muted">Henüz deneme sınavı eklenmemiş.</p>';
+                return;
+            }
+            
+            const currentExam = appState.student.exams[appState.student.currentExam];
+            const results = currentExam.results;
+            
+            let html = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>${currentExam.name}</h5>
+                    <small class="text-muted">${currentExam.date}</small>
+                </div>
+                <div class="row">
+            `;
+            
+            // Calculate net for each subject - subject keys updated
+            const subjects = [
+                { key: 'türkçe', name: 'Türkçe', color: 'turkish' },
+                { key: 'matematik', name: 'Matematik', color: 'math' },
+                { key: 'fen', name: 'Fen Bilimleri', color: 'science' },
+                { key: 'inkılap', name: 'İnkılap', color: 'history' },
+                { key: 'ingilizce', name: 'İngilizce', color: 'english' },
+                { key: 'din', name: 'Din Kültürü', color: 'religion' }
+            ];
+            
+            subjects.forEach(subject => {
+                const result = results[subject.key];
+                if (!result) return;
+                
+                const net = result.correct - (result.wrong / 4); // LGS calculation: 4 yanlış 1 doğruyu götürür
+                const percentage = (result.correct / result.total) * 100;
+                
+                html += `
+                    <div class="col-6 mb-3">
+                        <div class="subject-card ${subject.color}">
+                            <h6>${subject.name}</h6>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small>Net: <strong>${net.toFixed(2)}</strong></small>
+                                </div>
+                                <div>
+                                    <small>${result.correct}/${result.total}</small>
+                                </div>
+                            </div>
+                            <div class="progress progress-bar-custom mt-1">
+                                <div class="progress-bar bg-${subject.color}" role="progressbar" style="width: ${percentage}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            // Total net
+            const totalNet = calculateTotalNet(currentExam);
+            html += `
+                <div class="alert alert-info mt-3">
+                    <h6>Toplam Net: <strong>${totalNet.toFixed(2)}</strong></h6>
+                    <small class="mb-0">Toplam 90 soruda ${totalNet.toFixed(2)} net yapmışsın. Hedefine ulaşmak için ${(90 - totalNet).toFixed(2)} net daha yapmalısın.</small>
+                </div>
+            `;
+            
+            examStatsDiv.innerHTML = html;
+            
+            // Update exam history dropdown
+            updateExamHistoryDropdown();
+        }
+
+        // Calculate total net for an exam
+        function calculateTotalNet(exam) {
+            let totalNet = 0;
+            Object.values(exam.results).forEach(result => {
+                totalNet += result.correct - (result.wrong / 4);
+            });
+            return totalNet;
+        }
+
+        // Update exam history dropdown
+        function updateExamHistoryDropdown() {
+            const dropdownMenu = document.getElementById('examHistoryDropdownMenu');
+            let html = '';
+            
+            appState.student.exams.forEach((exam, index) => {
+                const isActive = index === appState.student.currentExam;
+                html += `
+                    <li>
+                        <a class="dropdown-item ${isActive ? 'active' : ''}" href="#" data-exam-index="${index}">
+                            ${exam.name} ${isActive ? '(Şu anki)' : ''}
+                        </a>
+                    </li>
+                `;
+            });
+            
+            dropdownMenu.innerHTML = html;
+            
+            // Add event listeners
+            dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const examIndex = parseInt(this.getAttribute('data-exam-index'));
+                    appState.student.currentExam = examIndex;
+                    saveStudentData();
+                    renderExamStats();
+                    updatePerformanceChart();
+                });
+            });
+        }
+
+        // Render exam history
+        function renderExamHistory() {
+            const examHistoryList = document.getElementById('examHistoryList');
+            
+            if (appState.student.exams.length === 0) {
+                examHistoryList.innerHTML = '<p class="text-muted">Henüz deneme sınavı eklenmemiş.</p>';
+                return;
+            }
+            
+            let html = '';
+            
+            // Show last 5 exams
+            const examsToShow = appState.student.exams.slice(-5).reverse();
+            
+            examsToShow.forEach(exam => {
+                const totalNet = calculateTotalNet(exam);
+                const isCurrent = exam.id === appState.student.exams[appState.student.currentExam].id;
+                
+                html += `
+                    <div class="exam-history-item ${isCurrent ? 'border-primary' : ''}" data-exam-id="${exam.id}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">${exam.name}</h6>
+                                <small class="text-muted">${exam.date}</small>
+                            </div>
+                            <div class="text-end">
+                                <strong>${totalNet.toFixed(2)} Net</strong>
+                                ${isCurrent ? '<div class="badge bg-primary">Şu anki</div>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            examHistoryList.innerHTML = html;
+            
+            // Add event listeners to exam history items
+            examHistoryList.querySelectorAll('.exam-history-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const examId = parseInt(this.getAttribute('data-exam-id'));
+                    const examIndex = appState.student.exams.findIndex(exam => exam.id === examId);
+                    
+                    if (examIndex !== -1) {
+                        appState.student.currentExam = examIndex;
+                        saveStudentData();
+                        renderExamStats();
+                        updatePerformanceChart();
+                        showNotification(`"${appState.student.exams[examIndex].name}" denemesi görüntüleniyor.`, "info");
+                    }
+                });
+            });
+            
+            // Update chart exam dropdown
+            updateChartExamDropdown();
+        }
+
+        // Update chart exam dropdown
+        function updateChartExamDropdown() {
+            const dropdownMenu = document.getElementById('chartExamDropdownMenu');
+            let html = `
+                <li><a class="dropdown-item chart-exam-selector" href="#" data-exam-index="all">Tüm Denemeler</a></li>
+                <li><hr class="dropdown-divider"></li>
+            `;
+            
+            appState.student.exams.forEach((exam, index) => {
+                html += `
+                    <li>
+                        <a class="dropdown-item chart-exam-selector" href="#" data-exam-index="${index}">
+                            ${exam.name}
+                        </a>
+                    </li>
+                `;
+            });
+            
+            dropdownMenu.innerHTML = html;
+            
+            // Add event listeners
+            dropdownMenu.querySelectorAll('.chart-exam-selector').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const examIndex = this.getAttribute('data-exam-index');
+                    
+                    if (examIndex === 'all') {
+                        document.getElementById('chartExamDropdown').textContent = 'Tüm Denemeler';
+                        renderAllExamsChart();
+                    } else {
+                        const index = parseInt(examIndex);
+                        document.getElementById('chartExamDropdown').textContent = appState.student.exams[index].name;
+                        renderSingleExamChart(index);
+                    }
+                });
+            });
+        }
+
+        // Initialize performance chart
+        function initializePerformanceChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            window.performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Türkçe', 'Matematik', 'Fen', 'İnkılap', 'İngilizce', 'Din'],
+                    datasets: []
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 20,
+                            title: {
+                                display: true,
+                                text: 'Net Sayısı'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y.toFixed(2)} net`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Render chart for current exam
+            renderSingleExamChart(appState.student.currentExam);
+        }
+
+        // Render single exam chart - DÜZELTİLMİŞ VERSİYON
+        function renderSingleExamChart(examIndex) {
+            const exam = appState.student.exams[examIndex];
+            const results = exam.results;
+            
+            // Calculate nets
+            const turkishNet = results['türkçe'].correct - (results['türkçe'].wrong / 4);
+            const mathNet = results['matematik'].correct - (results['matematik'].wrong / 4);
+            const scienceNet = results['fen'].correct - (results['fen'].wrong / 4);
+            const historyNet = results['inkılap'].correct - (results['inkılap'].wrong / 4);
+            const englishNet = results['ingilizce'].correct - (results['ingilizce'].wrong / 4);
+            const religionNet = results['din'].correct - (results['din'].wrong / 4);
+            
+            window.performanceChart.data.datasets = [{
+                label: exam.name,
+                data: [turkishNet, mathNet, scienceNet, historyNet, englishNet, religionNet],
+                backgroundColor: [
+                    'rgba(231, 76, 60, 0.7)',
+                    'rgba(52, 152, 219, 0.7)',
+                    'rgba(46, 204, 113, 0.7)',
+                    'rgba(243, 156, 18, 0.7)',
+                    'rgba(155, 89, 182, 0.7)',
+                    'rgba(26, 188, 156, 0.7)'
+                ],
+                borderColor: [
+                    'rgb(231, 76, 60)',
+                    'rgb(52, 152, 219)',
+                    'rgb(46, 204, 113)',
+                    'rgb(243, 156, 18)',
+                    'rgb(155, 89, 182)',
+                    'rgb(26, 188, 156)'
+                ],
+                borderWidth: 1
+            }];
+            
+            window.performanceChart.update();
+        }
+
+        // Render all exams chart
+        function renderAllExamsChart() {
+            if (appState.student.exams.length === 0) return;
+            
+            const datasets = [];
+            const colors = [
+                'rgba(231, 76, 60, 0.7)',
+                'rgba(52, 152, 219, 0.7)',
+                'rgba(46, 204, 113, 0.7)',
+                'rgba(243, 156, 18, 0.7)',
+                'rgba(155, 89, 182, 0.7)',
+                'rgba(26, 188, 156, 0.7)'
+            ];
+            
+            // Show only last 5 exams to avoid clutter
+            const examsToShow = appState.student.exams.slice(-5);
+            
+            examsToShow.forEach((exam, index) => {
+                const results = exam.results;
+                
+                // Calculate nets
+                const turkishNet = results['türkçe'].correct - (results['türkçe'].wrong / 4);
+                const mathNet = results['matematik'].correct - (results['matematik'].wrong / 4);
+                const scienceNet = results['fen'].correct - (results['fen'].wrong / 4);
+                const historyNet = results['inkılap'].correct - (results['inkılap'].wrong / 4);
+                const englishNet = results['ingilizce'].correct - (results['ingilizce'].wrong / 4);
+                const religionNet = results['din'].correct - (results['din'].wrong / 4);
+                
+                datasets.push({
+                    label: exam.name,
+                    data: [turkishNet, mathNet, scienceNet, historyNet, englishNet, religionNet],
+                    backgroundColor: colors[index % colors.length],
+                    borderColor: colors[index % colors.length].replace('0.7', '1'),
+                    borderWidth: 1
+                });
+            });
+            
+            window.performanceChart.data.datasets = datasets;
+            window.performanceChart.update();
+        }
+
+        // Update performance chart
+        function updatePerformanceChart() {
+            renderSingleExamChart(appState.student.currentExam);
+        }
+
+        // Send message function
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            // Add user message to chat
+            addMessageToChat("user", message);
+            
+            // Clear input
+            input.value = '';
+            
+            // Process message and generate response
+            setTimeout(() => {
+                processUserMessage(message);
+            }, 500);
+        }
+
+        // Add message to chat
+        function addMessageToChat(sender, message, saveToHistory = true) {
+            const chatContainer = document.getElementById('chatContainer');
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            // Avatar
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            avatarDiv.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+            
+            // Message content
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = message;
+            
+            // Add to message div
+            if (sender === 'user') {
+                messageDiv.appendChild(contentDiv);
+                messageDiv.appendChild(avatarDiv);
+            } else {
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+            }
+            
+            // Add to chat container
+            chatContainer.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Add to conversation history and save
+            if (saveToHistory) {
+                appState.conversationHistory.push({ sender, message });
+                saveConversation();
+            }
+            
+            // Speak the message if it's from bot and text-to-speech is enabled
+            if (sender === 'bot' && appState.textToSpeechEnabled && appState.speechSynthesis) {
+                speakText(message);
+            }
+        }
+
+        // Speak text using speech synthesis
+        function speakText(text) {
+            if (!appState.speechSynthesis || appState.volume === 0) return;
+            
+            // Cancel any ongoing speech
+            appState.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'tr-TR';
+            utterance.volume = appState.volume / 100;
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            
+            // Use Turkish voice if available
+            if (appState.turkishVoice) {
+                utterance.voice = appState.turkishVoice;
+            }
+            
+            appState.speechSynthesis.speak(utterance);
+        }
+
+        // Process user message and generate response
+        function processUserMessage(message) {
+            const lowerMessage = message.toLowerCase();
+            let response = "";
+            let similarQuestions = [];
+            let isExactMatch = false;
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate AI processing delay
+            setTimeout(() => {
+                // Remove typing indicator
+                removeTypingIndicator();
+                
+                // Check for LGS date related questions
+                if (lowerMessage.includes('lgs') && (lowerMessage.includes('ne zaman') || lowerMessage.includes('tarih'))) {
+                    response = `LGS 14 Haziran 2026 Pazar günü yapılacak. ${getDaysRemainingText()}`;
+                    isExactMatch = true;
+                }
+                else if (lowerMessage.includes('sınav') && lowerMessage.includes('ne zaman')) {
+                    response = `LGS sınavı 14 Haziran 2026 Pazar günü yapılacak. ${getDaysRemainingText()}`;
+                    isExactMatch = true;
+                }
+                else if (lowerMessage.includes('lgs sınavı')) {
+                    response = `LGS sınavı 14 Haziran 2026 Pazar günü yapılacak. ${getDaysRemainingText()}`;
+                    isExactMatch = true;
+                }
+                else if (lowerMessage.includes('kaç gün kaldı') || lowerMessage.includes('sınava ne kadar')) {
+                    response = getDaysRemainingText();
+                    isExactMatch = true;
+                }
+                // Check knowledge base
+                else {
+                    // First, try exact match
+                    if (appState.knowledgeBase[lowerMessage]) {
+                        response = appState.knowledgeBase[lowerMessage].answer;
+                        isExactMatch = true;
+                    } 
+                    // Then try keyword matching and similarity
+                    else {
+                        let bestMatch = null;
+                        let bestMatchScore = 0;
+                        let allMatches = [];
+                        
+                        for (const [question, data] of Object.entries(appState.knowledgeBase)) {
+                            let score = 0;
+                            
+                            // Check exact match
+                            if (lowerMessage === question) {
+                                score = 100;
+                            }
+                            // Check if the question is contained in the message
+                            else if (lowerMessage.includes(question) && question.length > 5) {
+                                score = 80;
+                            }
+                            // Check if message is contained in the question
+                            else if (question.includes(lowerMessage) && lowerMessage.length > 5) {
+                                score = 70;
+                            }
+                            // Check keywords
+                            else if (data.keywords && data.keywords.length > 0) {
+                                data.keywords.forEach(keyword => {
+                                    if (lowerMessage.includes(keyword)) {
+                                        score += 10;
+                                    }
+                                });
+                            }
+                            
+                            // Check individual words
+                            const messageWords = lowerMessage.split(' ');
+                            const questionWords = question.split(' ');
+                            let commonWords = 0;
+                            
+                            messageWords.forEach(mWord => {
+                                if (mWord.length > 3) {
+                                    questionWords.forEach(qWord => {
+                                        if (qWord.includes(mWord) || mWord.includes(qWord)) {
+                                            commonWords++;
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            score += commonWords * 5;
+                            
+                            if (score > 0) {
+                                allMatches.push({ question, data, score });
+                                
+                                if (score > bestMatchScore) {
+                                    bestMatchScore = score;
+                                    bestMatch = data;
+                                }
+                            }
+                        }
+                        
+                        // Sort matches by score
+                        allMatches.sort((a, b) => b.score - a.score);
+                        
+                        // Get top 3 similar questions
+                        similarQuestions = allMatches.slice(0, 3).map(match => match.question);
+                        
+                        if (bestMatch && bestMatchScore >= 15) {
+                            response = bestMatch.answer;
+                            isExactMatch = false;
+                        } else {
+                            // Default response if no match found
+                            response = `"${message}" sorusu için şu an detaylı bir cevap veremiyorum. `;
+                            
+                            if (similarQuestions.length > 0) {
+                                response += `Belki şunu sormak istediniz: "${similarQuestions[0]}"?`;
+                            } else {
+                                response += `LGS ile ilgili diğer sorularınıza yardımcı olabilirim. Örneğin, LGS tarihi, net arttırma teknikleri, çalışma programı veya sınav kaygısı hakkında sorabilirsiniz.`;
+                            }
+                        }
+                    }
+                }
+                
+                // Special handling for "nasılsın" type questions
+                if (lowerMessage.includes('nasılsın') || lowerMessage.includes('naber')) {
+                    appState.student.lastMood = "asked";
+                }
+                else if (lowerMessage.includes('iyiyim') && appState.student.lastMood === "asked") {
+                    response = "Harika duydum! LGS hazırlıkların nasıl gidiyor?";
+                    appState.student.lastMood = "good";
+                    isExactMatch = true;
+                }
+                else if (lowerMessage.includes('kötüyüm') && appState.student.lastMood === "asked") {
+                    response = "Üzüldüm, neden kötü hissettiğini paylaşmak ister misin? Bazen konuşmak iyi gelir. LGS hazırlık sürecinde böyle hissetmek normal, seni desteklemek için buradayım.";
+                    appState.student.lastMood = "bad";
+                    isExactMatch = true;
+                }
+                else if (lowerMessage.includes('deneme analizi') || lowerMessage.includes('analiz yap')) {
+                    response = generateExamAnalysis();
+                    isExactMatch = true;
+                }
+                
+                // Add bot response to chat
+                addMessageToChat("bot", response);
+                
+                // Add similar questions if not exact match and we have similar questions
+                if (!isExactMatch && similarQuestions.length > 0) {
+                    setTimeout(() => {
+                        let similarHtml = `<div class="question-match"><small><strong>Benzer sorular:</strong><br>`;
+                        similarQuestions.forEach((q, index) => {
+                            similarHtml += `${index + 1}. <span class="similar-question-link" style="color: var(--primary-color); cursor: pointer; text-decoration: underline;" data-question="${q}">${q}</span><br>`;
+                        });
+                        similarHtml += `</small></div>`;
+                        
+                        const similarDiv = document.createElement('div');
+                        similarDiv.className = 'message bot-message';
+                        similarDiv.innerHTML = `
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                ${similarHtml}
+                            </div>
+                        `;
+                        
+                        document.getElementById('chatContainer').appendChild(similarDiv);
+                        document.getElementById('chatContainer').scrollTop = document.getElementById('chatContainer').scrollHeight;
+                        
+                        // Add event listeners to similar question links
+                        document.querySelectorAll('.similar-question-link').forEach(link => {
+                            link.addEventListener('click', function() {
+                                const question = this.getAttribute('data-question');
+                                document.getElementById('messageInput').value = question;
+                                sendMessage();
+                            });
+                        });
+                    }, 500);
+                }
+            }, 1000 + Math.random() * 1500); // Random delay between 1-2.5 seconds
+        }
+
+        // Generate exam analysis
+        function generateExamAnalysis() {
+            if (appState.student.exams.length === 0) {
+                return "Henüz deneme sınavı eklememişsin. Önce bir deneme sınavı eklemelisin. 'Yeni Deneme Ekle' butonunu kullanabilirsin.";
+            }
+            
+            const currentExam = appState.student.exams[appState.student.currentExam];
+            let analysis = `${currentExam.name} deneme analizin şu şekilde:\n\n`;
+            
+            // Calculate nets and provide feedback
+            const subjects = [
+                { key: 'türkçe', name: 'Türkçe' },
+                { key: 'matematik', name: 'Matematik' },
+                { key: 'fen', name: 'Fen Bilimleri' },
+                { key: 'inkılap', name: 'İnkılap Tarihi' },
+                { key: 'ingilizce', name: 'İngilizce' },
+                { key: 'din', name: 'Din Kültürü' }
+            ];
+            
+            subjects.forEach(subject => {
+                const result = currentExam.results[subject.key];
+                if (!result) return;
+                
+                const net = result.correct - (result.wrong / 4);
+                const percentage = (result.correct / result.total) * 100;
+                
+                analysis += `${subject.name}: ${net.toFixed(2)} net (${result.correct}D, ${result.wrong}Y, ${result.empty}B)\n`;
+                
+                // Add feedback based on performance
+                if (percentage >= 80) {
+                    analysis += `→ Harika! ${subject.name} dersinde çok başarılısın. Bu performansını sürdürmeye devam et.\n`;
+                } else if (percentage >= 60) {
+                    analysis += `→ İyi gidiyorsun! ${subject.name} dersinde daha iyi olmak için yanlış yaptığın konulara odaklan.\n`;
+                } else {
+                    analysis += `→ ${subject.name} dersinde gelişim gösterebilirsin. Eksik konularını belirleyip tekrar yapmalısın.\n`;
+                }
+                
+                analysis += "\n";
+            });
+            
+            // Total net feedback
+            const totalNet = calculateTotalNet(currentExam);
+            analysis += `Toplam Net: ${totalNet.toFixed(2)}\n`;
+            
+            if (totalNet >= 70) {
+                analysis += "\nMükemmel bir sonuç! Hedeflediğin liseye ulaşma yolunda emin adımlarla ilerliyorsun. Bu tempoyu korumalısın.";
+            } else if (totalNet >= 50) {
+                analysis += "\nİyi bir sonuç! Eksiklerini tamamlayarak netlerini daha da arttırabilirsin. Özellikle boş bıraktığın sorulara odaklanmalısın.";
+            } else {
+                analysis += "\nDaha çok çalışmaya ihtiyacın var. Eksik konularını belirlemeli ve düzenli tekrar yapmalısın. Azimle çalışırsan başarı mutlaka gelecektir.";
+            }
+            
+            return analysis;
+        }
+
+        // Get days remaining text
+        function getDaysRemainingText() {
+            const today = new Date();
+            const timeDiff = lgsDate.getTime() - today.getTime();
+            const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            
+            if (daysRemaining > 0) {
+                return `LGS'ye ${daysRemaining} gün kaldı. Planlı çalışmaya devam et!`;
+            } else if (daysRemaining === 0) {
+                return "LGS bugün! Sakin ol, elinden gelenin en iyisini yapacağına eminim. Başarılar!";
+            } else {
+                return "LGS tarihi geçmiş. Eminim elinden gelenin en iyisini yapmışsındır!";
+            }
+        }
+
+        // Show typing indicator
+        function showTypingIndicator() {
+            const chatContainer = document.getElementById('chatContainer');
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot-message';
+            typingDiv.id = 'typingIndicator';
+            
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'message-avatar';
+            avatarDiv.innerHTML = '<i class="fas fa-robot"></i>';
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content typing-indicator';
+            contentDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+            
+            typingDiv.appendChild(avatarDiv);
+            typingDiv.appendChild(contentDiv);
+            
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // Initialize speech recognition
+        function initializeSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                appState.recognition = new SpeechRecognition();
+                appState.recognition.lang = 'tr-TR';
+                appState.recognition.interimResults = false;
+                appState.recognition.maxAlternatives = 1;
+                
+                appState.recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('messageInput').value = transcript;
+                    sendMessage();
+                };
+                
+                appState.recognition.onerror = function(event) {
+                    showNotification("Ses tanıma hatası: " + event.error, "error");
+                    appState.isListening = false;
+                    updateVoiceButton();
+                };
+                
+                appState.recognition.onend = function() {
+                    appState.isListening = false;
+                    updateVoiceButton();
+                };
+            } else {
+                document.getElementById('voiceButton').style.display = 'none';
+                showNotification("Tarayıcınız ses tanımayı desteklemiyor.", "warning");
+            }
+        }
+
+        // Toggle voice recognition
+        function toggleVoiceRecognition() {
+            if (!appState.recognition) return;
+            
+            if (appState.isListening) {
+                appState.recognition.stop();
+                appState.isListening = false;
+                showNotification("Ses dinleme durduruldu.", "info");
+            } else {
+                appState.recognition.start();
+                appState.isListening = true;
+                showNotification("Sesinizi dinliyorum... Konuşmaya başlayın.", "info");
+            }
+            
+            updateVoiceButton();
+        }
+
+        // Update voice button appearance
+        function updateVoiceButton() {
+            const voiceButton = document.getElementById('voiceButton');
+            if (appState.isListening) {
+                voiceButton.innerHTML = '<i class="fas fa-stop"></i>';
+                voiceButton.style.backgroundColor = 'var(--danger-color)';
+            } else {
+                voiceButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                voiceButton.style.backgroundColor = 'var(--primary-color)';
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = "info") {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            // Set color based on type
+            if (type === "success") {
+                notification.style.backgroundColor = "var(--success-color)";
+            } else if (type === "error") {
+                notification.style.backgroundColor = "var(--danger-color)";
+            } else if (type === "warning") {
+                notification.style.backgroundColor = "var(--warning-color)";
+            } else {
+                notification.style.backgroundColor = "var(--accent-color)";
+            }
+            
+            notificationText.textContent = message;
+            notification.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
