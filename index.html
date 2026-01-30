@@ -66,6 +66,79 @@
         .media-preview { max-width: 100%; max-height: 200px; border-radius: 1rem; object-fit: cover; margin-top: 10px; }
         .voice-note-item { transition: all 0.2s ease; }
         .voice-note-item:hover { background-color: #f8fafc; }
+        
+        .clear-chat-btn {
+            transition: all 0.2s ease;
+            border: 1px solid #fee2e2;
+        }
+        
+        .clear-chat-btn:active {
+            transform: scale(0.95);
+            background-color: #fecaca;
+        }
+        
+        .qa-table-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border-radius: 1rem;
+            border: 1px solid #e5e7eb;
+            background: white;
+        }
+        
+        .qa-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .qa-table th {
+            background: #f8fafc;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .qa-table td {
+            padding: 10px 12px;
+            font-size: 11px;
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: top;
+        }
+        
+        .qa-table tr:hover {
+            background-color: #f8fafc;
+        }
+        
+        .qa-question {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .qa-answer {
+            color: #4b5563;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .qa-actions {
+            white-space: nowrap;
+        }
+        
+        .qa-actions button {
+            padding: 5px 8px;
+            font-size: 10px;
+            margin: 0 2px;
+        }
     </style>
 </head>
 <body class="theme-sakin overflow-hidden">
@@ -576,7 +649,7 @@
   },
   {
     "q": "sınavda en çok hangi dersten başlamalıyım",
-    "a": "En güçlü olduğun dersten başlamak özgüvenini artırır. Bunu denemelerde test et."
+    "a": "En güçlü olduğun dersten başla. Bunu denemelerde test et."
   },
   {
     "q": "paragraf sorularında takılıyorum",
@@ -835,7 +908,7 @@
     "a": "Kesinlikle! Ama kopyalamak yerine konuyu kendi cümlelerinle ifade etmelisin."
   },
   {
-    "q": "bir konuyu ne zaman bitirmiş sayılırım",
+    "q": "bir konuyu ne zaman bitmiş sayılırım",
     "a": "Yeni nesil soruların %80'ini doğru çözebiliyorsan o konu bitmiştir."
   },
   {
@@ -1404,1067 +1477,387 @@
   },
   {
     "q": "başarılı olursam ailem bana ne alacak",
-    "a": "En büyük ödül başarının getirdiği özgürlüktür. Maddi ödül için anlaşma yapabilirsin."
+    "a": "En büyük ödül başarının getirdiği özgüven ve fırsatlardır."
   },
   {
     "q": "dershane çıkışı arkadaşlarla takılmak",
-    "a": "Haftada bir gün mola iyidir ama her güne yayarsan planın altüst olabilir."
+    "a": "Haftada bir gün sosyalleşmek önemli ama önceliğin derslerin olsun."
   },
   {
     "q": "okuldaki projeler lgs'ye engel mi",
-    "a": "Zamanını iyi yönetirsen projelerdeki yaratıcı bakış yeni nesil sorularda işine yarar."
+    "a": "Zaman yönetimiyle ikisini de yürütebilirsin. Projeler öğrenmene katkı sağlar."
   },
   {
     "q": "akşamları televizyon sesi dikkatimi dağıtıyor",
-    "a": "Ailenden sesi kısmalarını iste veya kulak tıkacı kullan. Sessizlik hakkındır."
+    "a": "Ailenden sessiz bir ortam sağlamalarını rica et veya kulak tıkacı kullan."
   },
   {
     "q": "başarırsam arkadaşlarım beni kıskanır mı",
-    "a": "Gerçek arkadaşlar mutlu olur. Kıskananlar olsa da sen sadece zirvene odaklan."
+    "a": "Gerçek arkadaşlar senin başarınla gurur duyar. Kıskananları dert etme."
   },
   {
     "q": "bilgisayar oyunlarını sileyim mi",
-    "a": "İradene hakim olamıyorsan silmek harika bir fikir. Sınavdan sonra daha tatlı olur."
+    "a": "Kontrolün dışına çıkıyorsa sınırlı zaman ayırmayı öğren, tamamen silme."
   },
   {
     "q": "evde sürekli 'hadi dersine' denmesi",
-    "a": "Bunu duymamak için planını onlara önceden göster. Çalıştığını görürlerse demezler."
+    "a": "Planını onlara göster, ne zaman çalışacağını bilirlerse rahat bırakırlar."
   },
   {
     "q": "arkadaşlarımla ortak çalışma grubu kurduk",
-    "a": "Harika! Ama grubun sohbet alanına dönmesine izin vermeyin, soru odaklı gidin."
+    "a": "Harika! Birbirinizi motive edin ama gereksiz sohbetlere kapılmayın."
   },
   {
     "q": "LGS süreci kişiliğimi değiştirir mi",
-    "a": "Bu süreç seni daha disiplinli bir insan yapacak. Hayat boyu bu yeteneği kullanacaksın."
+    "a": "Bu süreç seni daha disiplinli ve sorumluluk sahibi biri yapar, bu iyidir."
   },
   {
     "q": "sosyal medyada ders çalışma videoları çekmek",
-    "a": "Motivasyon veriyorsa yap ama kurgu ders vaktinden çalıyorsa dikkatli ol."
+    "a": "Vakit kaybı olabilir, odaklanmana engel oluyorsa bırak."
   },
   {
     "q": "hafta içi spora gitmek",
-    "a": "Fiziksel olarak bitirmiyorsa git. Ter atmak stresini düşürecektir."
+    "a": "Spor stres atmana yardımcı olur, haftada 2-3 gün idealdir."
   },
   {
     "q": "yemek yerken bile video izliyorum",
-    "a": "Yemek yerken sadece dinlenmeye odaklan. Beynini yormak sindirimi zorlaştırır."
+    "a": "Yemek zamanlarında dinlen, beynini dinlendir."
   },
   {
     "q": "sınav stresi yüzünden uykumda sayıklıyorum",
-    "a": "Yatmadan önce ekranları kapat ve kitap oku. Zihnin dinlenmeye ihtiyacı var."
+    "a": "Rahatlatıcı müzikler dinle veya uyumadan önce kitap oku."
   },
   {
     "q": "okul gezilerine katılmalı mıyım",
-    "a": "Kritik bir deneme haftası değilse katıl. Anı biriktirmek motivasyonunu tazeler."
+    "a": "Önemli bir çalışma günü değilse katıl, sosyalleşmek de önemli."
   },
   {
     "q": "internetsiz ders çalışamıyorum",
-    "a": "Gereken videoları indirip interneti kapatarak çalış, farkı göreceksin."
+    "a": "İnterneti sadece ihtiyacın olduğunda kullan, dikkat dağıtıcı sitelerden uzak dur."
   },
   {
     "q": "aile toplantıları çok uzun sürüyor",
-    "a": "Nazikçe odana çekil. Sınav hazırlığının yoğunluğunu anlatırsan anlayış görürsün."
+    "a": "Planına uygun olduğu sürece katıl, çalışma saatlerini koru."
   },
   {
     "q": "arkadaşımın netleri benden çok hızlı artıyor",
-    "a": "Onun yöntemi farklı olabilir. Taktik almayı dene ama asla kendini kıyaslayıp üzülme."
+    "a": "Herkesin öğrenme hızı farklıdır, kendine odaklan."
   },
   {
     "q": "lgs 2026'da derece yaparsam röportaj verir miyim",
-    "a": "Neden olmasın? Bu hayali canlı tut ve o gün için disiplinle çalış."
+    "a": "Tabii ki! Başarını paylaşmak hem seni mutlu eder hem de başkalarına ilham olur."
   },
   {
     "q": "akşamları kahve içmek uykumu kaçırır mı",
-    "a": "Geç saatteki kafein uyku kaliteni bozar. Akşamları süt veya bitki çayı tercih et."
+    "a": "Akşam geç saatlerde kafein tüketme, uyku kaliteni bozabilir."
   },
   {
     "q": "çalışırken sürekli bir şeyler atıştırmak istiyorum",
-    "a": "Stresten olabilir, sağlıklı seçimler yap. Abur cubur yerine meyve veya kuruyemiş ye."
+    "a": "Sağlıklı atıştırmalıklar seç, abur cuburdan uzak dur."
   },
   {
     "q": "hafta sonu geç uyanmak planımı bozuyor",
-    "a": "Pazar günü bile en geç 9:00'da kalkmaya çalış ki biyoritmin bozulmasın."
+    "a": "Hafta sonu da erken kalkmaya çalış, biyoritmini koru."
   },
   {
     "q": "okulda teneffüslerde soru çözmek",
-    "a": "Eksiğin varsa çöz ama teneffüste hava alman bir sonraki derste algını açar."
+    "a": "İyi bir fikir, ancak dinlenmek için de zaman ayır."
   },
   {
     "q": "arkadaşım sürekli 'çalışmıyorum' diyor ama yüksek yapıyor",
-    "a": "Bu klasik bir taktiktir. Sen başkasına değil, kendi emeğine ve hedefine odaklan."
+    "a": "Söylediklerine değil, kendi çalışmalarına odaklan."
   },
   {
     "q": "annem odamı toplarken notlarımı karıştırıyor",
-    "a": "Not düzeninin önemini anlat ve beraber bir dosyalama sistemi kurmayı teklif et."
+    "a": "Notlarını düzenli tut ve anneni nazikçe uyar."
   },
   {
     "q": "hayallerimdeki lise çok uzaktaysa",
-    "a": "Pansiyon imkanlarını araştır. Uzak bir okul kazanmak sana özgüven kazandırır."
+    "a": "Uzaklık engel değil, eğer gerçekten istiyorsan başarabilirsin."
   },
   {
     "q": "sosyal medya detoksu yapmalı mıyım",
-    "a": "Zamanını yönetemiyorsan 1 aylık detoks harika olur. Zihin gürültüsü azalır."
+    "a": "Evet, ders çalışırken sosyal medyadan uzak durmak odaklanmanı artırır."
   },
   {
     "q": "ders çalışırken telefonum yanımda dursun mu",
-    "a": "Asla! Telefonun varlığı bile odağını düşürür. Onu başka odaya hapset."
+    "a": "Hayır, dikkatini dağıtır. Başka odaya koy veya sessize al."
   },
   {
     "q": "akşamları çok çabuk yoruluyorum",
-    "a": "Okul çıkışı kısa bir şekerleme zihnini resetler ve akşam enerjini toplar."
+    "a": "Gündüz derslerini bitir, akşam hafif tekrarlar yap."
   },
   {
     "q": "arkadaşlarım deneme sonuçlarını yarıştırıyor",
-    "a": "Bu toksik yarışa dahil olma. Sen sadece kendi hatalarını düzeltmeye bak."
+    "a": "Onlarla yarışma, kendi gelişimine odaklan."
   },
   {
     "q": "lgs motivasyon videoları işe yarar mı",
-    "a": "Kısa süreli enerji verirler. Asıl motivasyon masaya oturup soruyu çözmektir."
+    "a": "Kısa süreli motive eder, ama asıl motivasyon içinden gelmeli."
   },
   {
     "q": "sınav senesinde aşık oldum",
-    "a": "Bunu bir engel değil motivasyon yapmaya çalış. Beraber kütüphaneye gidin."
+    "a": "Duygularını kontrol et, derslerini aksatmayacak şekilde davran."
   },
   {
     "q": "evde tek başıma çalışamıyorum",
-    "a": "Sanal çalışma odaları veya sessiz kütüphaneler başkalarının çalıştığını görmeni sağlar."
+    "a": "Kütüphaneye git veya online çalışma gruplarına katıl."
   },
   {
     "q": "okuldan gelince hemen masaya mı oturmalıyım",
-    "a": "Hayır, önce 1 saat dinlenip zihnini boşalt. Yorgun beyinle çalışmak verimsizdir."
+    "a": "Önce biraz dinlen, sonra derse başla."
   },
   {
     "q": "deneme sabahı ne yemeliyim",
-    "a": "Alışık olduğun bir kahvaltı yap. Yumurta ve tam buğday ekmeği zinde tutar."
+    "a": "Hafif ve besleyici bir kahvaltı yap, ağır yemekten kaçın."
   },
   {
     "q": "başarısız olursam öğretmenlerim ne der",
-    "a": "Emeğini görüyorlar, senin pes etmemen onlar için en değerlisidir."
+    "a": "Öğretmenlerin senin elinden geleni yaptığını bilir, destek olurlar."
   },
   {
     "q": "sürekli test çözmekten boynum tutuldu",
-    "a": "Kitap standı kullan. Göz hizanda okumak ağrıları azaltır ve verimi artırır."
+    "a": "Ara verip esneme hareketleri yap, dik oturmaya dikkat et."
   },
   {
     "q": "arkadaşlarımla dertleşmek zaman kaybı mı",
-    "a": "Hayır, paylaşmak rahatlatır. Sadece dertleşme seanslarını kısa tutmaya bak."
+    "a": "Hayır, duygusal destek almak önemlidir, ama ölçülü ol."
   },
   {
     "q": "ders çalışırken hayal kurmak odaklanmayı bozar mı",
-    "a": "Evet, hayalini bir kağıda not al ve 'mola vakti düşüneceğim' diyerek derse dön."
+    "a": "Evet, dikkatini toplamaya çalış, hayalleri mola zamanlarına sakla."
   },
   {
     "q": "en iyi lise hangisi",
-    "a": "Potansiyelini en iyi yansıtan ve ulaşımı kolay olan okuldur; araştıracağız."
+    "a": "Kendi ilgi ve yeteneklerine uygun olan en iyi lisendir."
   },
   {
     "q": "sınav yaklaştıkça iştahım kesiliyor",
-    "a": "Stres mideyi etkileyebilir. Az ama sık ye; meyve ve sıvı gıdalar zinde tutar."
+    "a": "Stres iştahı etkiler, küçük ve sık öğünler ye."
   },
   {
     "q": "lgs'de full çekmek mümkün mü",
-    "a": "Elbette! Her yıl yüzlerce öğrenci başarıyor, sen de onlardan biri olabilirsin."
+    "a": "Evet, düzenli çalışan ve azmeden her öğrenci başarabilir."
   },
   {
     "q": "tatilde akrabalara gitmeli miyiz",
-    "a": "Programını aksatacaksa kısa tutun. Ailene bu yılın kritikliğini anlat."
+    "a": "Kısa süreli git, çalışma düzenini bozma."
   },
   {
     "q": "ders çalışırken sürekli saate bakıyorum",
-    "a": "Saati görmeyeceğin bir yere koy. Zamanla değil, konularla yarışmaya odaklan."
+    "a": "Saati gözden uzak tut, zamanı unutup derse odaklan."
   },
   {
     "q": "başarırsam kendime ne alayım",
-    "a": "Çok istediğin somut bir hedef koy. Bu tür hedefler motivasyonu canlı tutar."
+    "a": "Kendini ödüllendirmek güzel, ama başarı en büyük ödüldür."
   },
   {
     "q": "lgs günü yağmur yağarsa",
-    "a": "Yağmur sesi bazen odaklayıcıdır. Yanına yedek kıyafet al ve ıslanmamaya bak."
+    "a": "Yağmurluk veya şemsiye al, erken yola çık."
   },
   {
     "q": "çevremdeki herkes benden çok şey bekliyor",
-    "a": "Bu bir güven göstergesidir ama sen sadece kendi geleceğin için çalışıyorsun."
+    "a": "Sen kendi beklentilerini karşılamaya odaklan, başkalarının beklentilerini dert etme."
   },
   {
     "q": "akşamları ders çalışırken ışık nasıl olmalı",
-    "a": "Göz yormayan masa lambası kullan. Sadece masanın aydınlık olması odaklatır."
+    "a": "Yeterli ve göz yormayan bir ışık kullan."
   },
   {
     "q": "denemede kalemimin ucu sürekli kırılıyor",
-    "a": "Stresten çok bastırıyor olabilirsin. Gevşe ve daha yumuşak hareketlerle kodla."
+    "a": "Yumuşak uçlu kalem kullan veya yedek bulundur."
   },
   {
     "q": "test kitabının üzerine not almak doğru mu",
-    "a": "Evet, çözüm yolunu veya yaptığın hatayı not alman o bilgiyi kalıcı yapar."
+    "a": "Evet, önemli noktaları not almak faydalıdır."
   },
   {
     "q": "lgs'de yanlışlar doğruları götürüyor mu",
-    "a": "Evet, 3 yanlış 1 doğruyu götürür. Emin olmadığın soruları boş bırak."
+    "a": "Evet, 3 yanlış 1 doğruyu götürür, emin olmadığın soruyu boş bırak."
   },
   {
     "q": "kitapçıkta çözüp optiğe geçirmeyi unutursam",
-    "a": "Bunu yaşamamak için her sayfa sonunda kodlamanı yap, sona bırakma."
+    "a": "Her sayfa sonunda kontrol et, unutma."
   },
   {
     "q": "çalışırken bacaklarımı sallıyorum",
-    "a": "Molalarda fiziksel hareketlerle enerjini at, masada daha sakin oturursun."
+    "a": "Bu dikkat dağıtabilir, mümkün olduğunca hareketsiz durmaya çalış."
   },
   {
     "q": "lgs 2026 soruları 2025'ten kolay mı olur",
-    "a": "Bilemeyiz ama sen en zora hazır olursan her türlü sınavda başarılı olursun."
+    "a": "Belli olmaz, sen en zora hazırlan."
   },
   {
     "q": "sınav salonunda gözetmen çok hareket ederse",
-    "a": "Kibarca rica et veya sadece kağıdına odaklanarak dış dünyayı kapat."
+    "a": "Dikkatini toplamaya çalış, sorulara odaklan."
   },
   {
     "q": "başarılı insanların sabah rutinleri",
-    "a": "Erken kalkarlar, su içerler ve planla güne başlarlar. Kendi rutinini oluştur."
+    "a": "Erken kalkar, egzersiz yapar ve planlı çalışırlar."
   },
   {
     "q": "lgs'den sonra hayat nasıl olacak",
-    "a": "Özgür, keyifli ve başarmış olmanın huzuruyla dolu harika bir tatil olacak!"
+    "a": "Rahatlayacak, yeni hedefler belirleyecek ve başarılarının keyfini çıkaracaksın."
   },
   {
     "q": "okulda herkes birbirine hava atıyor",
-    "a": "Hava geçici, başarı kalıcıdır. Sen sessizce çalış, sonucun cevabı verecektir."
+    "a": "Onlara takılma, kendi yoluna bak."
   },
   {
     "q": "ders çalışırken uyuşukluk çöküyor",
-    "a": "Hemen yüzünü yıka ve su iç. Hareket etmek uykunu ve enerjini açar."
+    "a": "Kısa bir mola ver, temiz hava al."
   },
   {
     "q": "sınavda silgi izi kalırsa",
-    "a": "Kaliteli bir silgi kullan ve temiz sildiğinden emin ol, okuyucu hata yapmasın."
+    "a": "Silgiyi temiz kullan, iz bırakmamaya dikkat et."
   },
   {
     "q": "lgs puan hesaplama robotları doğru mu",
-    "a": "Yaklaşık sonuçlar verirler. Robotlara değil, netlerini artırmaya odaklan."
+    "a": "Yaklaşık değer verir, resmi sonuçları bekle."
   },
   {
     "q": "ders çalışırken ayağımı masanın altına uzatıyorum",
-    "a": "Rahat olduğun gibi çalış ama uyku moduna geçmemek için hafif dik dur."
+    "a": "Rahat ettiğin pozisyonda çalış, ama dik oturmaya özen göster."
   },
   {
     "q": "sınav sabahı heyecandan bir şey yiyemezsem",
-    "a": "Zorlama ama bir muz veya süt tüket. Beyninin glikoza ihtiyacı var."
+    "a": "Az da olsa bir şeyler ye, aç karnına sınava girme."
   },
   {
     "q": "lgs 2026'ya kadar kaç test kitabı bitirmeliyim",
-    "a": "Sayıya değil, soruların mantığını anlamaya bak. Kalite her zaman kazanır."
+    "a": "Kaliteli çalışmak önemli, sayı değil."
   },
   {
     "q": "arkadaşlarım Whatsapp'tan çıkmış",
-    "a": "Kararlı bir adım atmışlar. Vaktini yönetemiyorsan sen de benzerini yapabilirsin."
+    "a": "Onların tercihi, sen kendi planına odaklan."
   },
   {
     "q": "çalışırken sürekli müzik mırıldanıyorum",
-    "a": "Beyninin bir kısmı boşta kalıyor demektir. Sorulara daha derin odaklanmaya çalış."
+    "a": "Bu dikkatini dağıtıyorsa sessiz çalışmayı dene."
   },
   {
     "q": "lgs rehberlik hocasıyla ne konuşmalıyım",
-    "a": "Korkularını ve netlerindeki takılmaları dürüstçe anlat, o senin yol arkadaşın."
+    "a": "Endişelerini, hedeflerini ve çalışma planını paylaş."
   },
   {
     "q": "ders çalışırken kağıtları yırtıp atıyorum sinirden",
-    "a": "Hemen masadan kalk ve 10 dakika hızlı yürü. Sinirle çalışmak vakit kaybıdır."
+    "a": "Sinirlenince mola ver, sakinleşince devam et."
   },
   {
     "q": "başarırsam hayatım gerçekten değişecek mi",
-    "a": "Evet! İyi bir lise sana kaliteli çevre, vizyon ve harika gelecek altyapısı sunar."
+    "a": "Evet, daha iyi bir lisede eğitim almak geleceğini şekillendirir."
   },
   {
     "q": "sınavda bir soruda 5 dakika takıldım",
-    "a": "Bunu yapma! İşaret koy ve geç. Zamanın kalırsa en son o soruya dönersin."
+    "a": "Zaman kaybetme, işaret koyup geç, sonra dönersin."
   },
   {
     "q": "lgs 2026 şifreleri var mı",
-    "a": "Tek şifre: Düzenli çalışma ve bol pratik. Mucize formüller yerine özü kavra."
+    "a": "Şifre yok, düzenli çalışmak ve azim var."
   },
   {
     "q": "annem test çözerken sürekli meyve getiriyor",
-    "a": "Bu bir sevgi gösterisi. Teşekkür et ve mola verince yiyeceğini söyleyip odağını koru."
+    "a": "Teşekkür et, molanda ye."
   },
   {
     "q": "okulda deneme olurken karnım guruldadı",
-    "a": "İnsani bir durum, kimse takılmaz. Sen sadece sorularına ve sürene odaklan."
+    "a": "Doğal bir durum, kimse takmaz."
   },
   {
     "q": "matematik yeni nesil soruları hikaye gibi",
-    "a": "Hikayeyi matematik diline çevir. Verilenleri sembollerle not ederek ilerle."
+    "a": "Evet, önce hikayeyi anla, sonra matematiksel çözüme geç."
   },
   {
     "q": "lgs'de kalemtraş çöpümü nereye atacağım",
-    "a": "Masada kalsın, görevliler halleder. Sınav anında böyle küçük detaylara takılma."
+    "a": "Masada bırak, gözetmen toplar."
   },
   {
     "q": "çalışırken sürekli esniyorum",
-    "a": "Oksijen azalmış olabilir. Camı aç, derin nefes al ve masada dik oturmaya çalış."
+    "a": "Odayı havalandır, derin nefes al."
   },
   {
     "q": "lgs 2026'yı kazanırsam hediye ne istersin",
-    "a": "Senin o okulun kapısından girdiğin haber en büyük hediye olacak!"
+    "a": "Senin başarın en güzel hediye!"
   },
   {
     "q": "haftalık ders programımı kendim mi yapmalıyım",
-    "a": "Evet, çünkü seni en iyi sen tanırsın. Ama öğretmeninden taslak bir plan alabilirsin."
+    "a": "Evet, kendi ihtiyaçlarına göre program yap en iyisi."
   },
   {
     "q": "lgs'de turlama tekniği hayat kurtarır mı",
-    "a": "Kesinlikle! Kolayları hemen çöz, zorları sona bırak; puanını maksimize et."
+    "a": "Evet, zaman yönetimi için çok faydalıdır."
   },
   {
     "q": "çalışırken telefonumdan bildirim geliyor",
-    "a": "Bildirimleri kapat veya telefonu başka odaya bırak. Odak bölünmesine izin verme."
+    "a": "Bildirimleri kapat, dikkatini topla."
   },
   {
     "q": "başarılı öğrenciler çok mu zeki",
-    "a": "Zeka sadece bir başlangıçtır; disiplinli ve istikrarlı olan her zaman kazanır."
+    "a": "Zeka önemli ama disiplin ve çalışmak daha önemli."
   },
   {
     "q": "lgs'ye 2026'ya kadar sosyal aktiviteleri azaltmalı mıyım",
-    "a": "Sıfırlama ama azalt. Kaliteli ve kısa sosyal molalar seni zinde tutacaktır."
+    "a": "Tamamen kesme, sınırlı tut."
   },
   {
     "q": "deneme çözerken odaklanamıyorum, sesler batıyor",
-    "a": "Zihnin yorgun olabilir. Başlamadan önce 2 dakika sadece nefesine odaklan."
+    "a": "Kulak tıkacı kullan veya sessiz bir ortam bul."
   },
   {
     "q": "matematikte negatif sayılar kafa karıştırıyor",
-    "a": "Borç-alacak dengesi olarak düşün, görselleştirdiğin an mantığı oturacaktır."
+    "a": "Pratik yap, kuralları iyi öğren."
   },
   {
     "q": "lgs 2026'da Türkçe mi daha önemli Matematik mi",
-    "a": "İkisinin de katsayısı yüksek ve ikisi de birbirini anlama becerisiyle destekler."
+    "a": "İkisi de çok önemli, ikisine de eşit ağırlık ver."
   },
   {
     "q": "çalışma masam pencere kenarında, dışarı bakıyorum",
-    "a": "Masanın yönünü duvara çevirmeyi dene, dikkat dağıtıcıları alanından çıkar."
+    "a": "Dikkatini dağıtıyorsa masanın yönünü değiştir."
   },
   {
     "q": "sınavda siligim yere düşerse",
-    "a": "Elini kaldırıp gözetmenden yardım iste, kendin eğilip zaman kaybetme."
+    "a": "Elini kaldır, gözetmenden yardım iste."
   },
   {
     "q": "başarısızlık korkusu beni kilitliyor",
-    "a": "Korkunu kabul et ama yönetmesine izin verme. Elinden geleni yapman yeterli."
+    "a": "Korkunu kabul et ama onun seni yönetmesine izin verme."
   },
   {
     "q": "lgs 2026'ya kaç gün kaldı tam olarak",
-    "a": "Zaman daralıyor ama hala vaktin var. Her saniyeyi verimli kullanmaya odaklan."
+    "a": "Hedef tarihe odaklan, her günü iyi değerlendir."
   },
   {
     "q": "çalışırken sürekli kalemle oynuyorum",
-    "a": "Vaktini çalıyorsa kalemi masaya bırak ve sadece soruya konsantre ol."
+    "a": "Bu dikkat dağıtıcı olabilir, kalemi bırakıp derse odaklan."
   },
   {
     "q": "başarılı olursam herkes beni sevecek mi",
-    "a": "Sevenler her halinle sever ama başarın kendine olan saygını ve güvenini artırır."
+    "a": "Önemli olan senin kendini sevmen ve değer vermen."
   },
   {
     "q": "lgs günü kahvaltıda çok yemeli miyim",
-    "a": "Aşırı doygunluk uyku getirebilir. Dengeli ve enerji veren gıdalar yeterlidir."
+    "a": "Hayır, hafif ve besleyici bir kahvaltı yap."
   },
   {
     "q": "deneme sonucumu rehber hocama göstermeye utanıyorum",
-    "a": "Hocan yargılamak için değil yol göstermek için orada, dürüstlük gelişim getirir."
+    "a": "Utangaç olma, rehber hocan sana yardımcı olmak için orada."
   },
   {
     "q": "çalışırken sürekli tatlı bir şeyler yemek istiyorum",
-    "a": "Bitter çikolata veya kuru meyve seç. Basit şeker seni çok çabuk yoracaktır."
+    "a": "Sağlıklı tatlı alternatiflerine yönel."
   },
   {
     "q": "lgs 2026 sınavında kaç soru var",
-    "a": "Toplam 90 soru; 50 sözel ve 40 sayısal. Her soru senin için yeni bir fırsat."
+    "a": "90 soru var: 50 sözel, 40 sayısal."
   },
   {
     "q": "ders çalışırken müzik dinlemek ezberlemeyi zorlaştırır mı",
-    "a": "Sözelde kelimeleri karıştırabilirsin, sessizlik ezberde her zaman daha iyidir."
+    "a": "Evet, özellikle sözel derslerde sessizlik daha iyidir."
   },
   {
     "q": "lgs şampiyonu olmak için ne yapmalıyım",
-    "a": "Planına sadık kal, yanlışlarını analiz et ve kendine inanmayı asla bırakma."
-  },
-  {
-    "q": "arkadaşlarımla dertleşmek zaman kaybı mı",
-    "a": "Zihinsel sağlığın için dertleşmek önemlidir; sadece bunu kısa bir mola gibi planla."
-  },
-  {
-    "q": "başarırsam ailem bana ne alacak",
-    "a": "En büyük ödül başarının getirdiği özgürlüktür; maddi hedefleri beraber netleştirin."
-  },
-  {
-    "q": "sınav stresiyle nasıl başa çıkarım",
-    "a": "Sınavı bildiklerini gösterme fırsatı olarak gör. Nefes egzersizleri ve uyku en iyi ilaçtır."
-  },
-  {
-    "q": "ders çalışırken sürekli bacaklarımı sallıyorum",
-    "a": "Molalarda fiziksel hareket yaparak enerjini at, masada daha sakin kalabilirsin."
-  },
-  {
-    "q": "lgs 2026 zor mu olacak",
-    "a": "Zorluk herkese aynı; iyi hazırlanan için zor sorular büyük bir avantajdır."
-  },
-  {
-    "q": "çalışırken yanımda birinin olması beni rahatlatıyor",
-    "a": "Sessizce seninle aynı odada durabilirler; güvende hissetmek odağını artırabilir."
-  },
-  {
-    "q": "başarısız olursam ne olur",
-    "a": "Hayat devam edecek; LGS bir son durak değil sadece bir yol ayrımıdır. Rahat ol."
-  },
-  {
-    "q": "deneme analizini yapmak çok sıkıcı",
-    "a": "Sıkıcı olsa da başarının anahtarı orada. Yanlışı çözünce konuyu tam öğrenmiş olursun."
-  },
-  {
-    "q": "lgs şifreleri var mı",
-    "a": "Tek bir şifre var: Disiplinli ve istikrarlı çalışma. Başka mucizeler arama."
-  },
-  {
-    "q": "çalışırken sürekli esniyorum",
-    "a": "Odayı havalandırıp beynine oksijen gitmesini sağla ve mümkünse dik otur."
-  },
-  {
-    "q": "bayramda ders çalışmalı mıyım",
-    "a": "Bir günü dinlenmeye ayır, kalan günlerde planını hafifleterek momentumunu koru."
-  },
-  {
-    "q": "arkadaşlarımın hepsi benden daha iyi net yapıyor",
-    "a": "Kendi ilerlemene odaklan, herkesin öğrenme hızı farklıdır; sabırlı olursan yükselirsin."
-  },
-  {
-    "q": "lgs 2026'da full çekmek mümkün mü",
-    "a": "Elbette! Her yıl birçok öğrenci başarıyor, sen de onlardan biri olabilirsin."
-  },
-  {
-    "q": "çalışırken sürekli bir şeyler atıştırmak istiyorum",
-    "a": "Strele başa çıkmak için sağlıklı atıştırmalıklar seç, beynini korumuş olursun."
-  },
-  {
-    "q": "sınavda süre biterken panik olursam",
-    "a": "Derin bir nefes al ve sadece önündeki soruya odaklan; panik hata yaptırır."
-  },
-  {
-    "q": "lgs'den sonra hayat nasıl olacak",
-    "a": "Başarmış olmanın huzuruyla harika bir tatil ve yeni arkadaşlar seni bekliyor."
-  },
-  {
-    "q": "ders çalışırken hayal kuruyorum",
-    "a": "Dikkatin dağılırsa hayalini not al ve mola vaktine sakla, sonra derse dön."
-  },
-  {
-    "q": "okulda deneme olurken karnım guruldadı",
-    "a": "İnsani bir durumdur, kimse takılmaz; sen sadece sorularına konsantre ol."
-  },
-  {
-    "q": "çalışma isteğim tamamen bitti",
-    "a": "Tükenmişlik yaşıyorsan 1 gün tam izin ver; dinlenmiş zihinle istek geri döner."
-  },
-  {
-    "q": "başarırsam arkadaşlarım beni kıskanır mı",
-    "a": "Gerçek dostlar seninle mutlu olur; kıskananlar olsa da sen zirvene odaklan."
-  },
-  {
-    "q": "akşam yemeğinde ailem sadece sınavı konuşuyor",
-    "a": "Onlara tatlıca sınav dışı konulardan konuşmayı teklif et; zihnin dinlenmeli."
-  },
-  {
-    "q": "oyun oynamayı tamamen bırakmalı mıyım",
-    "a": "Tamamen değil ama ödül olarak kullan; verimli çalışmanın ardından deşarj eder."
-  },
-  {
-    "q": "voleybol antrenmanlarına devam etmeli miyim",
-    "a": "Dersleri aksatmıyorsa devam et; fiziksel hareket stresi yönetmeye yardımcı olur."
-  },
-  {
-    "q": "sosyal medyada çok vakit kaybediyorum",
-    "a": "Süre sınırı koymayı dene; başkalarını izlemek yerine kendi hikayeni yaz."
-  },
-  {
-    "q": "en yakın arkadaşımla farklı liseleri hedefliyoruz",
-    "a": "Gerçek dostluklar mesafe tanımaz; farklı okullarda olsanız da bağınız kopmaz."
-  },
-  {
-    "q": "akrabalarım sürekli 'dersler nasıl' diye soruyor",
-    "a": "Gülümse ve 'Elimden geleni yapıyorum' de; detaylı açıklama yapmak zorunda değilsin."
-  },
-  {
-    "q": "sevgilim olması derslerimi etkiler mi",
-    "a": "Birbirinize destek olup çalışma saatlerine saygı duyuyorsanız bir sorun olmaz."
-  },
-  {
-    "q": "odamda ders çalışırken çok yalnız hissediyorum",
-    "a": "Kütüphaneye gitmek iyi gelebilir; aynı yolda binlerce öğrenci olduğunu unutma."
-  },
-  {
-    "q": "dizi izlemeye başlarsam duramıyorum",
-    "a": "Dizileri sezon bitince izleme sözü ver; merak duygusu odağını zorlaştırmasın."
-  },
-  {
-    "q": "internetteki başarı hikayeleri beni strese sokuyor",
-    "a": "Herkesin yolu farklıdır; başkalarının programına değil kendi hızına odaklan."
-  },
-  {
-    "q": "hafta sonu kursu çok yorucu",
-    "a": "Hafta içini hafifleterek denge kurabilirsin; emeğinin meyvesini Haziran'da alacaksın."
-  },
-  {
-    "q": "arkadaşlarım Whatsapp grubunda sürekli soru paylaşıyor",
-    "a": "Kaygılandırıyorsa bildirimleri kapat ve sadece belirlediğin zamanlarda bak."
-  },
-  {
-    "q": "annem sürekli başkalarının çocuklarıyla kıyaslıyor",
-    "a": "Kıyaslanmanın motivasyonunu düşürdüğünü annene dürüstçe ve sakinlikle anlat."
-  },
-  {
-    "q": "enstrüman çalmak derslerimi aksatır mı",
-    "a": "Kısa sürelerle ilgilenmek yaratıcı düşünme becerini besler ve beynini geliştirir."
-  },
-  {
-    "q": "doğum günümde ders çalışmalı mıyım",
-    "a": "Kendine yarım gün izin ver! Pastanı ye ve yeni yaşın için enerji depola."
-  },
-  {
-    "q": "sosyal ortamlarda lgs konuşulunca daralıyorum",
-    "a": "Konuyu nazikçe değiştir; zihnini arada bir bu gündemden uzaklaştırman gerekir."
-  },
-  {
-    "q": "abim/ablam beni çok sıkıştırıyor",
-    "a": "Tecrübelerini aktarmaya çalışıyorlar; onları gardiyan değil rehber olarak gör."
-  },
-  {
-    "q": "haftalık 1 gün tatil çok mu",
-    "a": "Asla! 1 gün tam dinlenmek kalan 6 günü maksimum verimle geçirmeni sağlar."
-  },
-  {
-    "q": "whatsapp durumlarına bakmadan duramıyorum",
-    "a": "Odak modunu kullan ve sosyal medyayı masanın dışında, telefonun içinde bırak."
-  },
-  {
-    "q": "ders çalışmaktan hobilerimi unuttum",
-    "a": "Hobilerin senin kimliğin; günde 15 dakika bile olsa ilgilenmek ruhunu besler."
-  },
-  {
-    "q": "okul servisinde vaktim boşa gidiyor",
-    "a": "Servis süresini kelime ezberi veya ders videoları dinleyerek değerlendirebilirsin."
-  },
-  {
-    "q": "moralim bozukken hiç çalışasım gelmiyor",
-    "a": "Duygularını bastırma ama tamamen de bırakma; bazen başlamak morali düzeltir."
-  },
-  {
-    "q": "okuldaki projeler lgs'ye engel mi",
-    "a": "Zaman yönetimi yaparsan projelerdeki yaratıcı bakış sınavda işine çok yarar."
-  },
-  {
-    "q": "akşamları televizyon sesi dikkatimi dağıtıyor",
-    "a": "Ailenden sesi kısmalarını iste veya kulak tıkacı kullanarak sessizliği sağla."
-  },
-  {
-    "q": "bilgisayar oyunlarını sileyim mi",
-    "a": "İradene hakim olamıyorsan geçici olarak silmek harika ve kararlı bir fikirdir."
-  },
-  {
-    "q": "evde sürekli 'hadi dersine' denmesi",
-    "a": "Bunu duymamak için planını onlara önceden göster, çalıştığını kanıtlamış olursun."
-  },
-  {
-    "q": "LGS süreci kişiliğimi değiştirir mi",
-    "a": "Seni daha disiplinli ve sabırlı bir insan yapar; bu yeteneği hayat boyu kullanırsın."
-  },
-  {
-    "q": "hafta içi spora gitmek",
-    "a": "Fiziksel olarak çok yormuyorsa git; ter atmak stres hormonunu düşürür."
-  },
-  {
-    "q": "yemek yerken bile video izliyorum",
-    "a": "Yemek yerken sadece dinlenmeye odaklan ki beynin bir sonraki derse hazır olsun."
-  },
-  {
-    "q": "sınav stresi yüzünden uykumda sayıklıyorum",
-    "a": "Zihnin çok dolu; yatmadan önce ekranları kapat ve kitap okuyarak sakinleş."
-  },
-  {
-    "q": "okul gezilerine katılmalı mıyım",
-    "a": "Kritik bir hafta değilse katıl; kafa dağıtmak motivasyonunu her zaman tazeler."
-  },
-  {
-    "q": "internetsiz ders çalışamıyorum",
-    "a": "Videoları önceden indirip interneti kapatarak çalış; odak farkını göreceksin."
-  },
-  {
-    "q": "aile toplantıları çok uzun sürüyor",
-    "a": "Nazikçe odana çekil ve sınav hazırlığını anlat; herkes anlayış gösterecektir."
-  },
-  {
-    "q": "arkadaşımın netleri benden çok hızlı artıyor",
-    "a": "Kendi ilerlemene ve hızına odaklan; sabırlı olursan sen de mutlaka yükseleceksin."
-  },
-  {
-    "q": "akşamları kahve içmek uykumu kaçırır mı",
-    "a": "Geç saatteki kafein uyku kalitesini bozar; akşamları bitki çaylarını tercih et."
-  },
-  {
-    "q": "hafta sonu geç uyanmak planımı bozuyor",
-    "a": "Pazar günü bile en geç 9:00'da kalkmaya çalış ki hafta içi düzenin bozulmasın."
-  },
-  {
-    "q": "okulda teneffüslerde soru çözmek",
-    "a": "Bahçeye çıkıp hava almak bir sonraki derste algını çok daha fazla açacaktır."
-  },
-  {
-    "q": "annem odamı toplarken notlarımı karıştırıyor",
-    "a": "Ona not düzeninin senin için ne kadar önemli olduğunu dürüstçe anlat."
-  },
-  {
-    "q": "sosyal medya detoksu yapmalı mıyım",
-    "a": "Eğer vaktini yönetemiyorsan 1 aylık detoks zihnini harika bir şekilde açar."
-  },
-  {
-    "q": "ders çalışırken telefonum yanımda dursun mu",
-    "a": "Asla! Telefonun varlığı bile odağını %20 düşürür; onu başka bir odaya hapset."
-  },
-  {
-    "q": "akşamları çok çabuk yoruluyorum",
-    "a": "Okul çıkışı yapacağın kısa bir şekerleme zihnini resetler ve enerji verir."
-  },
-  {
-    "q": "lgs motivasyon videoları işe yarar mı",
-    "a": "Kısa süreli enerji verirler; asıl motivasyon masaya oturup soruyu çözmektir."
-  },
-  {
-    "q": "sınav senesinde aşık oldum",
-    "a": "Bunu derslerine engel değil motivasyon kaynağı olarak kullanmaya çalış; inan bana."
-  },
-  {
-    "q": "evde tek başıma çalışamıyorum",
-    "a": "Başkalarının çalıştığını görmek seni tetikler; sessiz bir kütüphane bulabilirsin."
-  },
-  {
-    "q": "okuldan gelince hemen masaya mı oturmalıyım",
-    "a": "Hayır, önce dinlen ve zihnini boşalt; yorgun beyinle çalışmak vakit kaybıdır."
-  },
-  {
-    "q": "deneme sabahı ne yemeliyim",
-    "a": "Alışık olduğun kahvaltıyı yap; bal, yumurta ve ceviz seni dengede tutar."
-  },
-  {
-    "q": "başarısız olursam öğretmenlerim ne der",
-    "a": "Öğretmenlerin çabanı görüyor; sonuç ne olursa olsun seni her zaman desteklerler."
-  },
-  {
-    "q": "sürekli test çözmekten boynum tutuldu",
-    "a": "Kitap standı kullan ve göz hizasında oku; boyun ağrıların bu şekilde azalacaktır."
-  },
-  {
-    "q": "lgs'de full çekmek mümkün mü",
-    "a": "Elbette! Her yıl birçok öğrenci bunu başarıyor; emek verirsen neden sen olmayasın?"
-  },
-  {
-    "q": "deneme çözerken dışarıdaki seslere takılıyorum",
-    "a": "Gerçek sınavda da sesler olabilir; odaklanmak için bazen gürültülü ortamda test çöz."
-  },
-  {
-    "q": "lgs günü hava kapalı olursa moralim bozulur mu",
-    "a": "Hava kontrolünde değil ama netlerin senin elinde; sadece işine ve soruna odaklan."
-  },
-  {
-    "q": "ders çalışırken müzik mırıldanmak",
-    "a": "Beyninin bir kısmı tam odaklanmamış demektir; sorulara daha derinleşmeye çalış."
-  },
-  {
-    "q": "başarılı olursam herkes beni sevecek mi",
-    "a": "Sevenler her halinle sever ama başarın özgüvenini ve saygınlığını çok artırır."
-  },
-  {
-    "q": "akşamları ders çalışırken ışık nasıl olmalı",
-    "a": "Sarı-beyaz karışımı bir lamba kullan ve sadece masanın aydınlık olmasına dikkat et."
-  },
-  {
-    "q": "lgs 2026 soruları 2025'ten kolay mı olur",
-    "a": "Bunu kimse bilemez; sen en zora hazır olursan her türlü sınavda uçarsın."
-  },
-  {
-    "q": "başarırsam kendime ne alayım",
-    "a": "İstediğin somut bir hedef için ailenle anlaş; somut hedefler motivasyonu artırır."
-  },
-  {
-    "q": "lgs'den sonra ne kadar tatil yapacağım",
-    "a": "Tam 3 ay dilediğin gibi dinlenebilirsin; o büyük tatil için şimdi dişini sık."
-  },
-  {
-    "q": "sınavda kitapçık türünü işaretlemeyi unutursam",
-    "a": "Bu kritik bir hatadır; teslim etmeden önce kontrol etmeyi asla unutmamalısın."
-  },
-  {
-    "q": "denemede kalemimin ucu sürekli kırılıyor",
-    "a": "Çok bastırıyor olabilirsin; sakinleş ve kalemi daha yumuşak kullanmaya çalış."
-  },
-  {
-    "q": "lgs puan hesaplama robotları doğru mu",
-    "a": "Robotlara değil netlerini artırmaya odaklan; standart sapma her yıl değişir."
-  },
-  {
-    "q": "çalışırken sürekli hayal kuruyorum",
-    "a": "Hayallerini mola zamanına ödül olarak sakla; şimdi sadece önündeki soruya odaklan."
-  },
-  {
-    "q": "lgs şampiyonu röportajı verirsem ne diyeyim",
-    "a": "'Düzenli çalıştım' dersin! O günün gelmesi için bugün masaya oturmalısın."
-  },
-  {
-    "q": "matematikte olasılık çok kolay ama hata yapıyorum",
-    "a": "Kolay dediğin yerlerde dikkatsizlik artar; tüm durumları yazmadan işaretleme."
-  },
-  {
-    "q": "sınavda silgi izi kalırsa ne olur",
-    "a": "Yumuşak bir silgiyle iyice temizle; optik okuyucunun hata yapmasına izin verme."
-  },
-  {
-    "q": "lgs günü yağmur yağarsa",
-    "a": "Yağmurun sesi bazen rahatlatır; doğa olaylarının odağını bozmasına izin verme."
-  },
-  {
-    "q": "başarırsam öğretmenlerim benimle gurur duyacak mı",
-    "a": "Çabanla zaten gurur duyuyorlar; başarın bu gururu sadece taçlandıracaktır."
-  },
-  {
-    "q": "çalışma masam pencere kenarında",
-    "a": "Dışarı bakmaktan odaklanamıyorsan masanın yerini hemen değiştirmelisin."
-  },
-  {
-    "q": "sınavda siligim yere düşerse",
-    "a": "Gözetmenden yardım iste ve kendin almaya çalışıp asla zaman kaybetme."
-  },
-  {
-    "q": "lgs 2026'ya kadar kaç test kitabı bitirmeliyim",
-    "a": "Sayıya değil mantığa odaklan; kaliteli çalışma her zaman daha çok kazandırır."
-  },
-  {
-    "q": "okulda herkes birbirine hava atıyor",
-    "a": "Hava geçicidir, başarı kalıcı; sessizce çalış ve cevabını sonuçlarınla ver."
-  },
-  {
-    "q": "yazılılar lgs'den daha zor geliyor",
-    "a": "Yazılılar bilgi, lgs yorum ölçer; ikisi farklıdır ama birbirini her zaman besler."
-  },
-  {
-    "q": "sınavda bir soruda 5 dakika takıldım",
-    "a": "Bunu yapma! İşaret koy ve geç; zamanın kalırsa en son o soruya geri dönersin."
-  },
-  {
-    "q": "başarırsam istediğim o telefonu alırlar mı",
-    "a": "Ailenle başarı anlaşması yap; somut hedefler motivasyonunu her zaman taze tutar."
-  },
-  {
-    "q": "lgs rehber hocasıyla ne konuşmalıyım",
-    "a": "Korkularını ve netlerindeki takılmaları anlat; o sana en iyi yolu gösterecektir."
-  },
-  {
-    "q": "çalışırken sürekli saate bakıyorum",
-    "a": "Saati görmeyeceğin bir yere koy ve zamanla değil konularla yarışmaya odaklan."
-  },
-  {
-    "q": "lgs'de kalemtraş çöpümü ne yapacağım",
-    "a": "Kalemlerini önceden hazırla; çöpün masada kalsın görevliler halledecektir."
-  },
-  {
-    "q": "çalışırken kağıtları yırtıp atıyorum",
-    "a": "Hemen masadan kalk ve dinlen; sinirle çalışmak sana hiçbir şey kazandırmaz."
-  },
-  {
-    "q": "başarırsam hayatım gerçekten değişecek mi",
-    "a": "Kesinlikle! Kaliteli çevre ve harika bir gelecek altyapısı seni bekliyor olacak."
-  },
-  {
-    "q": "deneme sabahı heyecandan yiyemezsem",
-    "a": "Zorlama ama bir muz veya süt tüket; beyninin enerjiye ihtiyacı var."
-  },
-  {
-    "q": "lgs şifreleri var mı",
-    "a": "Tek şifre istikrarlı çalışmaktır; mucize formüller aramak yerine dersine odaklan."
-  },
-  {
-    "q": "arkadaşlarım Whatsapp'tan çıkmış",
-    "a": "Kararlı bir adım atmışlar; vaktini yönetemiyorsan sen de benzerini yapabilirsin."
-  },
-  {
-    "q": "çalışırken sürekli bir şeyler karalıyorum",
-    "a": "Odağını artırıyorsa sorun yok ama vaktini çalıyorsa sadece soruya odaklan."
-  },
-  {
-    "q": "lgs 2026 sınavında kaç soru var",
-    "a": "90 soru seni bekliyor; her biri hayallerine giden yolda birer yeni adımdır."
-  },
-  {
-    "q": "çalışırken ayağımı sallıyorum",
-    "a": "Molalarda hareket ederek enerjini at; vücudun boşalırsa masada daha sakin olursun."
-  },
-  {
-    "q": "lgs'de yanlışlar doğruları götürüyor mu",
-    "a": "Evet, 3 yanlış 1 doğruyu siler; emin olmadığın soruları boş bırakmak akıllıcadır."
-  },
-  {
-    "q": "kitapçıkta çözüp optiğe geçirmeyi unutursam",
-    "a": "Bunu yaşamamak için sayfa sonunda kodla; sona bırakmak çok büyük bir risktir."
-  },
-  {
-    "q": "başarılı öğrenciler çok mu zeki",
-    "a": "Zeka avantajdır ama disiplin her zaman kazanır; sen her zaman planına sadık kal."
-  },
-  {
-    "q": "lgs'ye girenlerin sayısı beni korkutuyor",
-    "a": "Rakibin diğerleri değil önündeki sorulardır; sen sadece kendi hedefine odaklan."
-  },
-  {
-    "q": "deneme analizini yapmak çok sıkıcı",
-    "a": "Öğrenme yanlışlarda gizlidir; analizini yap asıl farkı o yaratacaktır."
-  },
-  {
-    "q": "başarırsam ailem benimle gurur duyacak mı",
-    "a": "Ailen her zaman en iyisini ister; senin mutluluğun onların en büyük gururudur."
-  },
-  {
-    "q": "ders çalışırken sürekli esniyorum",
-    "a": "Odayı havalandır ve dik otur; beynine oksijen gitmesini mutlaka sağla."
-  },
-  {
-    "q": "lgs 2026'ya kadar sosyal medyayı silmeli miyim",
-    "a": "Eğer odağını çok dağıtıyorsa evet; sınavdan sonra dilediğin kadar vakit ayırırsın."
-  },
-  {
-    "q": "deneme çözerken odaklanamıyorum",
-    "a": "Başlamadan önce 2 dakika derin nefes egzersizi yap, zihnini sakinleştirecektir."
-  },
-  {
-    "q": "matematikte negatif sayılar",
-    "a": "Borç-alacak dengesi gibi düşün; görselleştirdiğin an mantığı yerine oturacaktır."
-  },
-  {
-    "q": "lgs'de Türkçe mi daha önemli Matematik mi",
-    "a": "İkisinin de katsayısı yüksek; dengeli çalışmak seni her zaman öne geçirecektir."
-  },
-  {
-    "q": "çalışma masam çok dağınık",
-    "a": "Dağınık masa zihni yorar; masanda sadece o an çalıştığın kitap kalsın."
-  },
-  {
-    "q": "sınav salonunda gözetmen çok ses yaparsa",
-    "a": "Sadece kağıdına odaklan; konsantre olan bir beyin dış dünyayı duymaz."
-  },
-  {
-    "q": "başarısızlık korkusu beni engelliyor",
-    "a": "Korkunu kabul et ama yönetmesine izin verme; 'elimden geleni yapıyorum' de."
-  },
-  {
-    "q": "lgs 2026'ya tam olarak kaç gün kaldı",
-    "a": "Zaman her saniye kıymetli; kalan süreni en verimli şekilde kullanmaya odaklan."
-  },
-  {
-    "q": "ders çalışırken müzik dinlemek",
-    "a": "Sayısalda belki ama sözelde sessizlik her zaman daha çok kazandırır."
-  },
-  {
-    "q": "başarılı olursam ne istersin",
-    "a": "Senin mutluluğun en büyük hediye; ama başarınca bir gün kahveni içerim."
-  },
-  {
-    "q": "lgs günü kahvaltıda ne yemeli",
-    "a": "Enerji veren hafif gıdalar seç ve ağır yiyeceklerden mutlaka kaçın."
-  },
-  {
-    "q": "deneme sonucunu rehber hocama söylemeye utanıyorum",
-    "a": "Hocan sana yardım etmek için orada; dürüstlük en hızlı gelişim yoludur."
-  },
-  {
-    "q": "çalışırken sürekli tatlı bir şeyler yemek istiyorum",
-    "a": "Kuru meyve veya bitter çikolata seç; basit şeker seni çok çabuk yoracaktır."
-  },
-  {
-    "q": "lgs 2026'da derece yapmak mümkün mü",
-    "a": "Çalışan herkes için mümkün; sen de o şanslı ve azimli azınlıktan olabilirsin."
-  },
-  {
-    "q": "çalışırken mırıldanmak",
-    "a": "Bu dikkatinin tam toplanmadığını gösterir; sorulara daha çok derinleşmeye çalış."
-  },
-  {
-    "q": "başarılı insanlar nasıl çalışır",
-    "a": "Sessizce, düzenli ve sabırla; sen de kendi stilini oluşturup devam et."
-  },
-  {
-    "q": "lgs'den sonra hayat çok mu güzel",
-    "a": "Başarmış olmanın huzuruyla harika bir tatil seni bekliyor olacak; sabret."
-  },
-  {
-    "q": "arkadaşlarım beni dışlar mı",
-    "a": "Gerçek arkadaşlar hedefine her zaman saygı duyar; gerisini dert etme."
-  },
-  {
-    "q": "çalışırken sürekli uyuşukluk çöküyor",
-    "a": "Hemen kalk ve yüzünü yıka; hareket etmek her zaman uykunu açacaktır."
-  },
-  {
-    "q": "denemede yanlış kodlama yapmaktan korkuyorum",
-    "a": "Bol bol prova yap ve kontrol etmeyi bir rutin haline mutlaka getir."
-  },
-  {
-    "q": "lgs puan hesaplama robotları",
-    "a": "Netlerini artırmaya odaklan; gerçek puan ancak sınavdan sonra belli olur."
-  },
-  {
-    "q": "çalışırken ayağımı masanın altına uzatmak",
-    "a": "Rahat olduğun pozisyonu seç ama uyuyacak kadar da gevşememeye çalış."
-  },
-  {
-    "q": "sınav sabahı heyecan",
-    "a": "Derin nefesler al; heyecan senin hazır ve istekli olduğunun göstergesidir."
-  },
-  {
-    "q": "lgs'ye kadar kaç kitap bitmeli",
-    "a": "Anlayarak bitirdiğin her soru seni hayallerine bir adım daha yaklaştırır."
-  },
-  {
-    "q": "arkadaşlarım gruptan çıkmış",
-    "a": "Onlar kararlı adımlar atmışlar; sen de kendi yolunu buna göre çiz."
-  },
-  {
-    "q": "çalışırken sürekli kalemle oynamak",
-    "a": "Vaktini çalıyorsa kalemi bırak ve sadece çözdüğün soruya odaklan."
-  },
-  {
-    "q": "lgs rehber hocası",
-    "a": "Dürüstçe dertleş; o senin bu yoldaki en büyük yol arkadaşlarından biridir."
-  },
-  {
-    "q": "kağıtları yırtıp atmak",
-    "a": "Stresin tavan yapmış demektir; hemen masadan kalk ve biraz dinlen."
-  },
-  {
-    "q": "başarırsam hayatım değişecek",
-    "a": "İyi bir lise kapıları senin için sonuna kadar ve harika bir şekilde açacak."
-  },
-  {
-    "q": "sınavda 5 dakika bir soruda kalmak",
-    "a": "Bunu asla yapma; hemen geç zamanın kalırsa o soruya mutlaka dönersin."
-  },
-  {
-    "q": "lgs şifreleri",
-    "a": "Tek şifre disiplindir; başka bir mucize veya kısa yol arayışına girme."
-  },
-  {
-    "q": "annem sürekli meyve getiriyor",
-    "a": "Ona teşekkür et ve bu güzel jesti mola zamanına saklamasını rica et."
-  },
-  {
-    "q": "sınavda karnım guruldadı",
-    "a": "Kimse duymaz merak etme; sen sadece önündeki kağıda ve sürene bak."
-  },
-  {
-    "q": "matematik yeni nesil sorular",
-    "a": "Hikayeyi matematik diline çevirdiğin an gerisi kendiliğinden kolayca gelecektir."
-  },
-  {
-    "q": "kalemtraş çöpü",
-    "a": "Masada kalsın görevliler halledecektir; bunu dert edip odağını bozma."
-  },
-  {
-    "q": "çalışırken esniyorum",
-    "a": "Odayı hemen havalandır; içeri oksijen girmesi zihnini tazeleyecektir."
-  },
-  {
-    "q": "lgs 2026 hediyesi",
-    "a": "Senin başarını ve o mutluluğunu görmek benim için en büyük hediyedir."
-  },
-  {
-    "q": "ders programı",
-    "a": "Programını kendine göre uyarla ve ona her ne olursa olsun sadık kal."
-  },
-  {
-    "q": "turlama tekniği",
-    "a": "Puanını artırmanın en iyi yolu budur; bunu denemelerde mutlaka uygula."
-  },
-  {
-    "q": "telefon bildirimleri",
-    "a": "Tümünü tamamen kapat; odağının bir an bile bölünmesine izin verme."
-  },
-  {
-    "q": "zeki mi disiplinli mi",
-    "a": "Disiplinli çalışan zekiyi her zaman geçer; sen her zaman planlı ol."
-  },
-  {
-    "q": "sosyal aktiviteler",
-    "a": "Azalt ama tamamen sıfırlama; zihninin dinlenmeye de ihtiyacı var."
-  },
-  {
-    "q": "deneme analizleri",
-    "a": "Sıkılsan da mutlaka yap; başarının asıl anahtarı o yanlışlarda gizlidir."
-  },
-  {
-    "q": "negatif sayılar",
-    "a": "Mantığını bir kez anladığın an sorular kendiliğinden hızla çözülecektir."
-  },
-  {
-    "q": "Türkçe mi Matematik mi",
-    "a": "Hepsi bir bütündür; tüm derslerine aynı özeni ve emeği vermelisin."
-  },
-  {
-    "q": "duvara karşı çalışmak",
-    "a": "Dikkatini tek bir noktada toplamanı sağlar; bunu mutlaka denemelisin."
-  },
-  {
-    "q": "silgi izleri",
-    "a": "İyice sildiğinden emin ol; optik okuyucunun hata yapmasına imkan verme."
-  },
-  {
-    "q": "başarısızlık korkusu",
-    "a": "Bu korkuyu bir motivasyon kaynağına dönüştürüp daha çok çalışmaya odaklan."
-  },
-  {
-    "q": "lgs 2026 gün sayacı",
-    "a": "Azalıyor olması seni korkutmasın aksine daha çok hırslandırsın; başaracaksın."
-  },
-  {
-    "q": "çalışırken şarkı söylemek",
-    "a": "Sorulara daha derin bir şekilde odaklanmaya ve zihnini sadece derse vermeye çalış."
-  },
-  {
-    "q": "saygı duyulan bir öğrenci olmak",
-    "a": "Emeklerin ve başaracağın o güzel sonuç seni o noktaya kendiliğinden taşıyacaktır."
-  },
-  {
-    "q": "sınav sabahı ne yemeli",
-    "a": "Seni zinde ve uyanık tutacak hafif ama enerji veren şeyler tercih etmelisin."
-  },
-  {
-    "q": "sonuçlardan korkmak",
-    "a": "Bugün üzerine düşeni yapıp çalışırsan sonuçlardan korkmana hiç gerek kalmaz."
-  },
-  {
-    "q": "tatlı isteği",
-    "a": "Beynin yakıt istiyor demektir; ona sağlıklı şekerler verip zihnini koru."
-  },
-  {
-    "q": "kaç soru var toplam",
-    "a": "90 soru ve 90 harika fırsat seni bekliyor; her birini iyi değerlendir."
-  },
-  {
-    "q": "müzikli çalışma",
-    "a": "Kendini test et; eğer odağın en ufak bir şekilde bozuluyorsa müziği hemen kapat."
-  },
-  {
-    "q": "şampiyonluk yolu",
-    "a": "Bu yol bugün masada attığın küçük ama kararlı adımlarla döşeniyor; devam et."
-  },
-  {
-    "q": "dertleşmek",
-    "a": "Ara ara yapıp rahatla ama asıl hedefini ve dersini asla aksatmamaya bak."
-  },
-  {
-    "q": "teşekkürler",
-    "a": "Ben teşekkür ederim! Seninle bu yolu yürümek harika bir duygu. Başarılar!"
+    "a": "Disiplinli çalış, düzenli tekrar yap ve kendine inan."
   }
 ],
             lgsTopics: lgsTopicsData,
@@ -2483,6 +1876,9 @@
         let editingFormulaCardId = null;
         let selectedMedia = null;
         let selectedMediaType = null;
+
+        // QA düzenleme için değişkenler
+        let editingQAIndex = null;
 
         const storage = {
             save: () => { 
@@ -2882,6 +2278,12 @@
             renderCoach(c) {
                 c.innerHTML = `
                     <div class="flex flex-col h-[65vh]">
+                        <div class="flex justify-between items-center mb-3 px-1">
+                            <h2 class="text-lg font-black uppercase text-primary">AI Koç</h2>
+                            <button onclick="clearChat()" class="text-xs font-black text-red-500 bg-red-50 px-3 py-1.5 rounded-full flex items-center gap-1 touch-feedback clear-chat-btn">
+                                <i class="fas fa-trash-alt text-[10px]"></i> SOHBETİ SİL
+                            </button>
+                        </div>
                         <div id="chat-messages" class="chat-messages hide-scrollbar">
                             ${state.messages.map(m => `<div class="flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}"><div class="chat-bubble ${m.sender === 'user' ? 'chat-user' : 'chat-ai'} shadow-sm">${utils.escape(m.text)}</div></div>`).join('')}
                         </div>
@@ -3207,7 +2609,66 @@
                     </div>
                     <div class="glass-card p-6 rounded-[2.5rem] mb-6 shadow-md border border-primary/10"><h3 class="text-sm font-black uppercase mb-6 text-primary flex items-center gap-2"><i class="fas fa-user-circle"></i> Profil Ayarları</h3><div class="space-y-5"><div class="flex flex-col items-center gap-4 mb-2"><div id="prof-preview" class="w-28 h-28 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border-4 border-white shadow-xl">${state.user.profilePic ? `<img src="${state.user.profilePic}" class="w-full h-full object-cover">` : '<i class="fas fa-user text-4xl text-gray-300"></i>'}</div><label class="bg-indigo-600 text-white px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase cursor-pointer touch-feedback shadow-lg active:scale-95 transition-all"><i class="fas fa-camera mr-1"></i> Fotoğraf Seç<input type="file" id="prof-file" class="hidden" accept="image/*" onchange="handleProfilePic(this)"></label></div><div class="space-y-1"><label class="text-[9px] font-black text-gray-400 uppercase ml-2">Ad Soyad</label><input type="text" id="prof-name" placeholder="İsim" value="${state.user.name}" class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none"></div><div class="space-y-1"><label class="text-[9px] font-black text-gray-400 uppercase ml-2">Hedef Lise Adı</label><input type="text" id="prof-school" placeholder="Hedef Lise" value="${state.user.targetSchool}" class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none"></div><div class="space-y-1"><label class="text-[9px] font-black text-gray-400 uppercase ml-2">LGS Puan Hedefi</label><input type="number" id="prof-score" placeholder="Hedef Puan" value="${state.user.targetScore}" class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none"></div><button onclick="updateProfile()" class="w-full bg-primary text-white py-4 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95">KAYDET</button></div></div>
                     <div class="glass-card p-6 rounded-3xl text-center shadow-md"><h3 class="text-[10px] font-black uppercase text-gray-400 mb-4 tracking-widest">Yönetici Girişi</h3><input type="password" id="pin-in" placeholder="****" class="w-full text-center text-4xl p-5 mt-2 bg-gray-50 rounded-2xl outline-none font-black tracking-[0.5em]" maxlength="4"><button onclick="checkAdmin()" class="w-full bg-gray-800 text-white py-5 mt-4 rounded-2xl font-black uppercase text-xs shadow-xl active:scale-95">PANELİ AÇ</button></div>
-                    <div id="admin-panel" class="hidden space-y-4 pt-4"><div class="glass-card p-6 rounded-3xl"><h4 class="text-xs font-black uppercase mb-3 text-red-500">Sınav Takvimi</h4><input type="date" id="exam-date-in" value="${state.user.examDate}" class="w-full p-4 bg-gray-50 rounded-xl mb-3 font-bold border-none outline-none"><button onclick="updateExamDate()" class="w-full bg-indigo-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">GÜNCELLE</button></div><div class="glass-card p-6 rounded-3xl"><div class="flex justify-between items-center mb-3"><h4 class="text-xs font-black uppercase text-red-500">AI Soru Yönetimi</h4><div class="flex gap-2"><button onclick="exportQA()" class="bg-blue-600 text-white p-2 rounded-lg text-[8px] font-black uppercase shadow-sm">QA İNDİR</button><label class="bg-blue-600 text-white p-2 rounded-lg text-[8px] font-black uppercase shadow-sm cursor-pointer">QA YÜKLE <input type="file" class="hidden" onchange="importQA(this)"></label></div></div><div class="space-y-2 max-h-40 overflow-y-auto mb-4 hide-scrollbar">${state.qa.map((item, idx) => `<div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl text-[10px] border border-gray-100"><span class="font-bold truncate pr-4 text-gray-600">${item.q}</span><button onclick="deleteQA(${idx})" class="text-red-500 hover:scale-110 transition-all"><i class="fas fa-trash"></i></button></div>`).join('')}</div><div class="space-y-2"><input type="text" id="new-q" placeholder="Soru..." class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none"><textarea id="new-a" placeholder="Cevap..." class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none"></textarea><button onclick="addQA()" class="w-full bg-green-500 text-white py-4 rounded-2xl font-black uppercase shadow-lg">LİSTEYE EKLE</button></div></div><div class="glass-card p-6 rounded-3xl"><h4 class="text-xs font-black uppercase mb-3 text-gray-400">Veri Transferi</h4><div class="grid grid-cols-2 gap-2"><button onclick="exportData()" class="bg-gray-800 text-white py-3 rounded-xl text-[9px] font-black">SİSTEM YEDEK</button><label class="bg-indigo-600 text-white py-3 rounded-xl text-[9px] font-black text-center cursor-pointer">YEDEK YÜKLE <input type="file" class="hidden" onchange="importData(this)"></label></div><button onclick="resetSystem()" class="w-full bg-red-500 text-white py-3 rounded-xl text-[9px] font-black uppercase mt-2 shadow-lg">SİSTEMİ SIFIRLA</button></div></div>
+                    <div id="admin-panel" class="hidden space-y-4 pt-4">
+                        <div class="glass-card p-6 rounded-3xl"><h4 class="text-xs font-black uppercase mb-3 text-red-500">Sınav Takvimi</h4><input type="date" id="exam-date-in" value="${state.user.examDate}" class="w-full p-4 bg-gray-50 rounded-xl mb-3 font-bold border-none outline-none"><button onclick="updateExamDate()" class="w-full bg-indigo-600 text-white py-3 rounded-xl text-[10px] font-black uppercase">GÜNCELLE</button></div>
+                        <div class="glass-card p-6 rounded-3xl">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="text-xs font-black uppercase text-red-500">AI Soru-Cevap Yönetimi</h4>
+                                <div class="flex gap-2">
+                                    <button onclick="exportQA()" class="bg-blue-600 text-white p-2 rounded-lg text-[8px] font-black uppercase shadow-sm">QA İNDİR</button>
+                                    <label class="bg-blue-600 text-white p-2 rounded-lg text-[8px] font-black uppercase shadow-sm cursor-pointer">QA YÜKLE <input type="file" class="hidden" onchange="importQA(this)"></label>
+                                </div>
+                            </div>
+                            
+                            <!-- QA Tablosu -->
+                            <div class="qa-table-container mb-4">
+                                <table class="qa-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Soru</th>
+                                            <th>Cevap</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${state.qa.map((item, idx) => `
+                                            <tr>
+                                                <td class="text-[9px] font-bold text-gray-500">${idx + 1}</td>
+                                                <td class="qa-question">${utils.escape(item.q)}</td>
+                                                <td class="qa-answer">${utils.escape(item.a)}</td>
+                                                <td class="qa-actions">
+                                                    <button onclick="editQA(${idx})" class="bg-indigo-100 text-indigo-600 px-2 py-1 rounded-lg text-[8px] font-bold hover:bg-indigo-200">
+                                                        <i class="fas fa-edit mr-1"></i> Düzenle
+                                                    </button>
+                                                    <button onclick="deleteQA(${idx})" class="bg-red-100 text-red-600 px-2 py-1 rounded-lg text-[8px] font-bold hover:bg-red-200">
+                                                        <i class="fas fa-trash mr-1"></i> Sil
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <input type="text" id="new-q" placeholder="Yeni soru..." class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none">
+                                <textarea id="new-a" placeholder="Cevap..." class="w-full p-4 bg-gray-50 rounded-2xl text-xs font-bold outline-none h-20"></textarea>
+                                <div class="flex gap-2">
+                                    <button onclick="addQA()" class="flex-1 bg-green-500 text-white py-3 rounded-2xl font-black uppercase shadow-lg">
+                                        <i class="fas fa-plus mr-1"></i> EKLE
+                                    </button>
+                                    <button onclick="updateQA()" id="update-qa-btn" class="flex-1 bg-yellow-500 text-white py-3 rounded-2xl font-black uppercase shadow-lg hidden">
+                                        <i class="fas fa-save mr-1"></i> GÜNCELLE
+                                    </button>
+                                    <button onclick="cancelEditQA()" id="cancel-qa-btn" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-2xl font-black uppercase shadow-lg hidden">
+                                        <i class="fas fa-times mr-1"></i> İPTAL
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-card p-6 rounded-3xl"><h4 class="text-xs font-black uppercase mb-3 text-gray-400">Veri Transferi</h4><div class="grid grid-cols-2 gap-2"><button onclick="exportData()" class="bg-gray-800 text-white py-3 rounded-xl text-[9px] font-black">SİSTEM YEDEK</button><label class="bg-indigo-600 text-white py-3 rounded-xl text-[9px] font-black text-center cursor-pointer">YEDEK YÜKLE <input type="file" class="hidden" onchange="importData(this)"></label></div><button onclick="resetSystem()" class="w-full bg-red-500 text-white py-3 rounded-xl text-[9px] font-black uppercase mt-2 shadow-lg">SİSTEMİ SIFIRLA</button></div>
+                    </div>
                 `;
             }
         };
@@ -4515,10 +3976,106 @@
 
         function deleteExam(id) { if(confirm("Denemeyi silmek istediğine emin misin?")) { state.exams = state.exams.filter(e => e.id !== id); storage.save(); updateFriendScores(); router.render(); } }
 
-        function checkAdmin() { if(document.getElementById('pin-in').value === state.user.adminPin) document.getElementById('admin-panel').classList.remove('hidden'); else alert("PIN Hatalı!"); }
+        // --- YENİ QA YÖNETİM FONKSİYONLARI ---
+        function editQA(index) {
+            editingQAIndex = index;
+            const qaItem = state.qa[index];
+            document.getElementById('new-q').value = qaItem.q;
+            document.getElementById('new-a').value = qaItem.a;
+            
+            // Butonları değiştir
+            document.getElementById('update-qa-btn').classList.remove('hidden');
+            document.getElementById('cancel-qa-btn').classList.remove('hidden');
+            document.querySelector('button[onclick="addQA()"]').classList.add('hidden');
+            
+            // Input alanına odaklan
+            document.getElementById('new-q').focus();
+        }
+
+        function updateQA() {
+            if (editingQAIndex === null) return;
+            
+            const newQ = document.getElementById('new-q').value.trim();
+            const newA = document.getElementById('new-a').value.trim();
+            
+            if (!newQ || !newA) {
+                alert("Soru ve cevap alanları boş olamaz!");
+                return;
+            }
+            
+            state.qa[editingQAIndex] = { q: newQ, a: newA };
+            storage.save();
+            
+            // Formu temizle ve butonları sıfırla
+            cancelEditQA();
+            
+            // Ayarlar sayfasını yeniden render et
+            router.render();
+        }
+
+        function cancelEditQA() {
+            editingQAIndex = null;
+            document.getElementById('new-q').value = '';
+            document.getElementById('new-a').value = '';
+            
+            // Butonları sıfırla
+            document.getElementById('update-qa-btn').classList.add('hidden');
+            document.getElementById('cancel-qa-btn').classList.add('hidden');
+            document.querySelector('button[onclick="addQA()"]').classList.remove('hidden');
+        }
+
+        function addQA() {
+            const newQ = document.getElementById('new-q').value.trim();
+            const newA = document.getElementById('new-a').value.trim();
+            
+            if (!newQ || !newA) {
+                alert("Soru ve cevap alanları boş olamaz!");
+                return;
+            }
+            
+            // Aynı soru var mı kontrol et
+            const existingIndex = state.qa.findIndex(item => item.q.toLowerCase() === newQ.toLowerCase());
+            if (existingIndex !== -1) {
+                if (confirm("Bu soru zaten var. Güncellemek ister misiniz?")) {
+                    state.qa[existingIndex].a = newA;
+                    storage.save();
+                    document.getElementById('new-q').value = '';
+                    document.getElementById('new-a').value = '';
+                    router.render();
+                }
+                return;
+            }
+            
+            state.qa.push({ q: newQ, a: newA });
+            storage.save();
+            
+            // Formu temizle
+            document.getElementById('new-q').value = '';
+            document.getElementById('new-a').value = '';
+            
+            // Ayarlar sayfasını yeniden render et
+            router.render();
+        }
+
+        function deleteQA(idx) {
+            if (confirm("Bu soru-cevap çiftini silmek istediğine emin misin?")) {
+                state.qa.splice(idx, 1);
+                storage.save();
+                router.render();
+            }
+        }
+
+        function checkAdmin() { 
+            if(document.getElementById('pin-in').value === state.user.adminPin) {
+                document.getElementById('admin-panel').classList.remove('hidden'); 
+                // QA düzenleme durumunu sıfırla
+                cancelEditQA();
+            } else {
+                alert("PIN Hatalı!");
+            }
+        }
+        
         function updateExamDate() { state.user.examDate = document.getElementById('exam-date-in').value; storage.save(); alert("Güncellendi!"); }
-        function addQA() { const q = document.getElementById('new-q').value; const a = document.getElementById('new-a').value; if(q && a) { state.qa.push({q, a}); storage.save(); router.render(); } }
-        function deleteQA(idx) { state.qa.splice(idx, 1); storage.save(); router.render(); }
         function exportQA() { const blob = new Blob([JSON.stringify(state.qa, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'qa_bank.json'; a.click(); }
         function importQA(input) { const fr = new FileReader(); fr.onload = e => { try { const d = JSON.parse(e.target.result); if(Array.isArray(d)) { state.qa = [...state.qa, ...d]; storage.save(); router.render(); alert("Eklendi!"); } } catch(err) { alert("Hata!"); } }; fr.readAsText(input.files[0]); }
         function exportData() { const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'backup.json'; a.click(); }
@@ -4540,6 +4097,15 @@
             if(a) { if(state.user.profilePic) a.innerHTML = `<img src="${state.user.profilePic}" class="w-full h-full object-cover">`; else a.innerHTML = `<i class="fas fa-user text-lg"></i>`; }
         }
 
+        // --- YENİ FONKSİYON: SOHBETİ TEMİZLE ---
+        function clearChat() {
+            if (confirm("Tüm sohbet geçmişini silmek istediğinize emin misiniz? Bu işlem geri alınamaz.")) {
+                state.messages = [];
+                storage.save();
+                router.render();
+            }
+        }
+
         function closeModal() { 
             document.getElementById('modal-container').classList.add('hidden'); 
             resetPomodoro(); 
@@ -4547,6 +4113,8 @@
             editingFormulaCardId = null;
             selectedMedia = null;
             selectedMediaType = null;
+            // QA düzenleme durumunu sıfırla
+            cancelEditQA();
         }
         
         function resetSystem() { if(confirm("TÜM VERİLER SİLİNECEK!")) { localStorage.clear(); location.reload(); } }
